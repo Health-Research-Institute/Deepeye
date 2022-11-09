@@ -1,14 +1,24 @@
 # test file
 import cv2
 
+#define data directory 
+dataDir =  "C:\\Users\\Temp\\Documents\\RetinaImages\\"
 
-# Python code to read image
-import cv2
- 
+#open and read labels file
+with open(dataDir + 'labels.log') as f:
+    while True:
+        line = f.readline()
+        if not line:
+            break
+        # find all lines with 7
+        if line.find('7', 7, 20) != -1:
+            print(line.strip())
+
 # To read image from disk, we use
 # cv2.imread function, in below method,
-img = cv2.imread("C:\\git\\opencv\\sources\\samples\\data\\baboon.jpg", cv2.IMREAD_COLOR)
- 
+img = cv2.imread(dataDir + 'im0001.ppm', cv2.IMREAD_COLOR)
+#img = cv2.imread("C:\\git\\opencv\\sources\\samples\\data\\baboon.jpg", cv2.IMREAD_COLOR)
+#img = cv2.imread("C:\\Users\\Temp\\Documents\\RetinaImages\\im0001.ppm", cv2.IMREAD_COLOR)
 # Creating GUI window to display an image on screen
 # first Parameter is windows title (should be in string format)
 # Second Parameter is image array
