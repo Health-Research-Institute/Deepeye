@@ -14,4 +14,6 @@ In VS Code perform the following steps:
 	https://developer.nvidia.com/cuda-downloads
 	Install Pytorch (see https://pytorch.org/get-started/locally/#windows-pip) 
 	without GPU - run: pip3 install torch torchvision torchaudio
-	without GPU - run: pip3 install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu117 (or cu118 based on current version)
+	with GPU - run: pip3 install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu117 (or cu118 based on current version)
+
+	General knowledge: to get the Python IDLE in VS Code environment - run "python" at cmd window.
