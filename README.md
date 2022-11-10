@@ -10,8 +10,4 @@ In VS Code perform the following steps:
 	Install Numpy package - run: pip install numpy
 	Install Matplotlib - run: pip install matplotlib 
 	Install OpenCV - run: pip install opencv-python
-	If you have GPU: install CUDA from here
-	https://developer.nvidia.com/cuda-downloads
-	Install Pytorch (see https://pytorch.org/get-started/locally/#windows-pip) 
-	without GPU - run: pip3 install torch torchvision torchaudio
-	without GPU - run: pip3 install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu117 (or cu118 based on current version)
+	Install Pytorch (see https://pytorch.org/get-started/locally/#windows-pip) - run: pip3 install torch torchvision torchaudio
