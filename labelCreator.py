@@ -22,11 +22,10 @@ for ind in range(1, 15):
                 break
             # find all lines with 7
             if line.find(str(ind), 7, 20) != -1:
-                #print(line.strip()[0:6]+ str(ind))
-                file1.write(line.strip()[0:6]+ ' ' + str(ind) + " \n")
+                #file1.write(line.strip()[0:6]+ ',' + str(ind) + "\n")
+                file1.write(line.strip()[0:6]+",1\n")
             else:
-                #print(line.strip()[0:6]+" 0")
-                file1.write(line.strip()[0:6]+" 0 \n")
+                file1.write(line.strip()[0:6]+",0\n")
 
     file1.close()
 
