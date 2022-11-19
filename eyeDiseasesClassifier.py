@@ -10,7 +10,9 @@ print(aa)
 from torch import nn
 from torch.utils.data import DataLoader
 from torchvision import datasets
+from torchvision import transforms
 from torchvision.transforms import ToTensor
+from torchvision.transforms import functional
 from torchvision.io import read_image
 
 
@@ -28,6 +30,11 @@ class CustomImageDataset:
     def __getitem__(self, idx):
         img_path = os.path.join(self.img_dir, self.img_labels.iloc[idx, 0])
         image = read_image(img_path)
+        transform = transforms.Grayscale()
+        image = transform(image)
+        transform = transforms.Resize((121,140))
+        image = transform(image)
+        image = functional.convert_image_dtype(image,torch.float32)
         label = self.img_labels.iloc[idx, 1]
         if self.transform:
             image = self.transform(image)
@@ -51,8 +58,8 @@ batch_size = 64
 train_dataloader = DataLoader(eyeTrainDataset, batch_size=batch_size)
 test_dataloader = DataLoader(eyeTestDataset, batch_size=batch_size)
 
-for X, y in test_dataloader:
-    print(f"Shape of X [N, C, H, W]: {X.shape}")
+for X, y in train_dataloader:
+    print(f"Shape of X [N, C, H, W]: {X.shape} {X.dtype}")
     print(f"Shape of y: {y.shape} {y.dtype}")
     break
 
@@ -75,7 +82,7 @@ class NeuralNetwork(nn.Module):
         super().__init__()
         self.flatten = nn.Flatten()
         self.linear_relu_stack = nn.Sequential(
-            nn.Linear(700*605, 512),
+            nn.Linear(121*140, 512),
             nn.ReLU(),
             nn.Linear(512, 512),
             nn.ReLU(),
@@ -141,12 +148,12 @@ for t in range(epochs):
 print("Done!")
 
 #Saving Models
-torch.save(model.state_dict(), "model.pth")
-print("Saved PyTorch Model State to model.pth")
+torch.save(model.state_dict(), "eyeModel.pth")
+print("Saved PyTorch Model State to eyeModel.pth")
 
 #Loading Models
 model = NeuralNetwork()
-model.load_state_dict(torch.load("model.pth"))
+model.load_state_dict(torch.load("eyeModel.pth"))
 
 #This model can now be used to make predictions.
 classes = [
@@ -155,11 +162,12 @@ classes = [
 ]
 
 model.eval()
-x, y = test_data[0][0], test_data[0][1]
-with torch.no_grad():
-    pred = model(x)
-    predicted, actual = classes[pred[0].argmax(0)], classes[y]
-    print(f'Predicted: "{predicted}", Actual: "{actual}"')
+for i in range(0,eyeTestDataset.__len__()):
+    x, y = eyeTestDataset[i][0], eyeTestDataset[i][1]
+    with torch.no_grad():
+        pred = model(x)
+        predicted, actual = classes[pred[0].argmax(0)], classes[y]
+        print(f'Predicted: "{predicted}", Actual: "{actual}"')
 
 
 secondsS = time.time()
