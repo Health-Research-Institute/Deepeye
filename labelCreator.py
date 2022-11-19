@@ -10,15 +10,26 @@ from torchvision.transforms import ToTensor
 #define data directory 
 dataDir =  "C:\\Users\\Temp\\Documents\\RetinaImages\\"
 
-#open and read labels file
-with open(dataDir + 'labels.log') as f:
-    while True:
-        line = f.readline()
-        if not line:
-            break
-        # find all lines with 7
-        if line.find('7', 7, 20) != -1:
-            print(line.strip())
+for ind in range(1, 15):
+
+    file1 = open(dataDir + 'label' + str(ind) + '.csv', "w")
+
+    #open and read labels file
+    with open(dataDir + 'labels.log') as f:
+        while True:
+            line = f.readline()
+            if not line:
+                break
+            # find all lines with 7
+            if line.find(str(ind), 7, 20) != -1:
+                #file1.write(line.strip()[0:6]+ ',' + str(ind) + "\n")
+                file1.write(line.strip()[0:6]+",1\n")
+            else:
+                file1.write(line.strip()[0:6]+",0\n")
+
+    file1.close()
+
+
 
 # To read image from disk, we use
 # cv2.imread function, in below method,
