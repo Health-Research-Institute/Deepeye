@@ -1,49 +1,4 @@
-## test file
-#import cv2
-#
-#import torch
-#from torch import nn
-#from torch.utils.data import DataLoader
-#from torchvision import datasets
-#from torchvision.transforms import ToTensor
-#
-##define data directory 
-#dataDir =  "C:\\Users\\Temp\\Documents\\RetinaImages\\"
-#
-##open and read labels file
-#with open(dataDir + 'labels.log') as f:
-#    while True:
-#        line = f.readline()
-#        if not line:
-#            break
-#        # find all lines with 7
-#        if line.find('7', 7, 20) != -1:
-#            print(line.strip())
-#
-## To read image from disk, we use
-## cv2.imread function, in below method,
-#img = cv2.imread(dataDir + 'im0001.ppm', cv2.IMREAD_COLOR)
-##img = cv2.imread("C:\\git\\opencv\\sources\\samples\\data\\baboon.jpg", cv2.IMREAD_COLOR)
-##img = cv2.imread("C:\\Users\\Temp\\Documents\\RetinaImages\\im0001.ppm", cv2.IMREAD_COLOR)
-## Creating GUI window to display an image on screen
-## first Parameter is windows title (should be in string format)
-## Second Parameter is image array
-#cv2.imshow("image", img)
-# 
-## To hold the window on screen, we use cv2.waitKey method
-## Once it detected the close input, it will release the control
-## To the next line
-## First Parameter is for holding screen for specified milliseconds
-## It should be positive integer. If 0 pass an parameter, then it will
-## hold the screen until user close it.
-#cv2.waitKey(0)
-# 
-## It is for removing/deleting created GUI window from screen
-## and memory
-#cv2.destroyAllWindows()
-
-
-#Test pytorch
+#Train eye diseases recognition system
 
 import os
 import cv2
@@ -81,34 +36,20 @@ class CustomImageDataset:
         return image, label
 
 
-eyeDataset = CustomImageDataset("../Images/STARE/label14.csv", "../Images/STARE")
-print("eyeDataset length is:", eyeDataset.__len__())
-#[eyeDatasetImage, eyeDatasetLabel] = eyeDataset.__getitem__(eyeDataset,1)
+eyeTrainDataset = CustomImageDataset("../Images/STARE/label14train.csv", "../Images/STARE")
+print("eyeTrainDataset length is:", eyeTrainDataset.__len__())
+eyeTestDataset = CustomImageDataset("../Images/STARE/label14test.csv", "../Images/STARE")
+print("eyeTestDataset length is:", eyeTestDataset.__len__())
 
-## Download training data from open datasets.
-#training_data = datasets.FashionMNIST(
-#    root="eyeData",
-#    train=True,
-#    download=True,
-#    transform=ToTensor(),
-#)
-#
-## Download test data from open datasets.
-#test_data = datasets.FashionMNIST(
-#    root="eyeData",
-#    train=False,
-#    download=True,
-#    transform=ToTensor(),
-#)
 ##We pass the Dataset as an argument to DataLoader.
 ##  This wraps an iterable over our dataset, and supports automatic batching, sampling, 
 ## shuffling and multiprocess data loading. Here we define a batch size of 64, 
 ## i.e. each element in the dataloader iterable will return a batch of 64 features and labels.
+batch_size = 64
 
 # Create data loaders
-batch_size = 50
-train_dataloader = DataLoader(eyeDataset, batch_size=batch_size)
-test_dataloader = DataLoader(eyeDataset, batch_size=batch_size)
+train_dataloader = DataLoader(eyeTrainDataset, batch_size=batch_size)
+test_dataloader = DataLoader(eyeTestDataset, batch_size=batch_size)
 
 for X, y in test_dataloader:
     print(f"Shape of X [N, C, H, W]: {X.shape}")
@@ -134,11 +75,11 @@ class NeuralNetwork(nn.Module):
         super().__init__()
         self.flatten = nn.Flatten()
         self.linear_relu_stack = nn.Sequential(
-            nn.Linear(28*28, 512),
+            nn.Linear(700*605, 512),
             nn.ReLU(),
             nn.Linear(512, 512),
             nn.ReLU(),
-            nn.Linear(512, 10)
+            nn.Linear(512, 2)
         )
 
     def forward(self, x):
@@ -209,16 +150,8 @@ model.load_state_dict(torch.load("model.pth"))
 
 #This model can now be used to make predictions.
 classes = [
-    "T-shirt/top",
-    "Trouser",
-    "Pullover",
-    "Dress",
-    "Coat",
-    "Sandal",
-    "Shirt",
-    "Sneaker",
-    "Bag",
-    "Ankle boot",
+    "Heathy",
+    "Age Related Macular Degeneration",
 ]
 
 model.eval()

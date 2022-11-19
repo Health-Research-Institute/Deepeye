@@ -8,7 +8,7 @@ from torchvision import datasets
 from torchvision.transforms import ToTensor
 
 #define data directory 
-dataDir =  "C:\\Users\\Temp\\Documents\\RetinaImages\\"
+dataDir =  "../Images/STARE/"
 
 for ind in range(1, 15):
 
