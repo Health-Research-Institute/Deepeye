@@ -8,6 +8,7 @@ In VS Code perform the following steps:
 	Choose Command Prompt for Terminal (next stages are according to https://docs.opencv.org/4.x/d5/de5/tutorial_py_setup_in_windows.html)
 	Update pip - run: python -m pip install --upgrade pip
 	Install Numpy package - run: pip install numpy
+	Install Pandas package - run: pip install pandas
 	Install Matplotlib - run: pip install matplotlib 
 	Install OpenCV - run: pip install opencv-python
 	If you have GPU: install CUDA from here
