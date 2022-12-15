@@ -18,3 +18,10 @@ In VS Code perform the following steps:
 	with GPU - run: pip3 install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu117 (or cu118 based on current version)
 
 	General knowledge: to get the Python IDLE in VS Code environment - run "python" at cmd window.
+	
+	For Keras installation:
+		Install Scipy package - run: pip install scipy
+		Install Scikit-learn package - run: pip install -U scikit-learn
+		Install Seaborn package - run: pip install seaborn
+		Install Tensorflow package - run: pip install tensorflow
+		Install Keras package - run: pip install keras
