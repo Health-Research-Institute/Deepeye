@@ -25,3 +25,6 @@ In VS Code perform the following steps:
 		Install Seaborn package - run: pip install seaborn
 		Install Tensorflow package - run: pip install tensorflow
 		Install Keras package - run: pip install keras
+		
+	For manual labeling of points
+		pip install mpl_point_clicker
