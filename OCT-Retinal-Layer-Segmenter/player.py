@@ -13,7 +13,7 @@ np.set_printoptions(threshold=sys.maxsize)
 # PARAMETERS 
 # Image directory
 # imagesPath = 'OCT-Retinal-Layer-Segmenter/trainingSet/origImages/'
-imagesPath = '../Images/CT_RETINA/DIABETR_107/'
+imagesPath = '../Images/CT_RETINA/MACHOLE_102/'
 imageIds = next(os.walk(imagesPath))[2]
 #Parameters to use with player
 sizeX = 640
@@ -43,9 +43,21 @@ model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accur
 model.load_weights('OCT-Retinal-Layer-Segmenter/retina_segmentation_8_layer.hdf5')
 # End LOAD MODEL
 
+#Sequence of layers per model:
+nOrder =  [0, 5, 3, 6, 1, 7, 4, 2, 8]
+# The number of corresponding areas (blobs) per layer from top to bottom
+# [2 var 2 2 2 1 1 1 1] (first upper layer is var)
+nFeatures = np.array([2, 3, 2, 2, 2, 1, 1, 1, 1])
+nFeaturesInOrder = nFeatures[nOrder]
+#print(nFeaturesInOrder)
+
+#set-up blob detector
+# Set up the detector with default parameters.
+detector = cv2.SimpleBlobDetector()
+
 # LOOP VIA IMAGES 
 #for i in range(nImages):
-for i in range(0,8):
+for i in range(0,10):
     valImage=thirdImages[i,:,:,:] #size: [sizeX, sizeY, 1] 
     testInput=np.expand_dims(valImage, 0) #size: [1, sizeX, sizeY, 1] 
     prediction = (model.predict(testInput))  #size [1, sizeX, sizeY, 9] 
@@ -56,25 +68,24 @@ for i in range(0,8):
     plt.subplot(261)
     plt.title('Testing Image')
     plt.imshow(valImage[:,:,0])
-    plt.subplot(262)
-    plt.imshow(prediction[0,:,:,0], cmap='jet')
-    plt.title('Background Predicition ')
-    plt.subplot(263)
-    plt.imshow(prediction[0,:,:,5], cmap='jet')
-    plt.subplot(264)
-    plt.imshow(prediction[0,:,:,3], cmap='jet')
-    plt.subplot(265)
-    plt.imshow(prediction[0,:,:,6], cmap='jet')
-    plt.subplot(266)
-    plt.imshow(prediction[0,:,:,1], cmap='jet')
-    plt.subplot(267)
-    plt.imshow(prediction[0,:,:,7], cmap='jet')
-    plt.subplot(268)
-    plt.imshow(prediction[0,:,:,4], cmap='jet')
-    plt.subplot(269)
-    plt.imshow(prediction[0,:,:,2], cmap='jet')
-    plt.subplot(2,6,10)
-    plt.imshow(prediction[0,:,:,8], cmap='jet')
+
+    #loop through nine layers 
+    for j in range(0,9):
+        # Detect blobs.
+        
+        layer01 = prediction[0,:,:,nOrder[j]] *255
+        layerTest = layer01.round() 
+        #print(layerTest.min(), ' ... ', layerTest.max())
+        cv2.imwrite('cv_img.jpg', layerTest)
+
+        imBD = cv2.imread("cv_img.jpg", cv2.IMREAD_GRAYSCALE)
+        # Detect blobs.
+        # keypoints = detector.detect(imBD)
+
+        plt.subplot(2,6,j+2)
+        plt.imshow(prediction[0,:,:,nOrder[j]], cmap='gray')
+        #plt.title('Level: ', str(j))
+    
     plt.subplot(2,6,11)
     plt.title('Combines Prediction')
     plt.imshow(predicted_img, cmap='jet')
