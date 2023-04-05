@@ -10,20 +10,33 @@ import random
 
 np.set_printoptions(threshold=sys.maxsize)
 
+
 # PARAMETERS 
-# Image directory
-# imagesPath = 'OCT-Retinal-Layer-Segmenter/trainingSet/origImages/'
-imagesPath = '../Images/CT_RETINA/MACHOLE_102/'
-imageIds = next(os.walk(imagesPath))[2]
+
+plotFlag = 1
+
+# Image directories
+imCoreName = 'MACHOLE' 
+imForTrain = 80
+imagePathThis  =  imCoreName + '_102/MH1-' + str(imForTrain)
+
+imagePathBase = '../Images/CT_RETINA/'
+imagesPathRead = imagePathBase + imagePathThis 
+imagesPathWrite = imagesPathRead +'_9Levels/'
+
+imageIds = next(os.walk(imagesPathRead))[2]
 #Parameters to use with player
 sizeX = 640
 sizeY = 640
 nClasses= 9 # Number of classes for segmentation
+#layers names 
+layersNames = ['BCG', 'NFL', 'GCL', 'INL', 'OPL' , 'ONL', 'ELZ', 'RPE', 'CHO']
+
 # End PARAMETERS
 
 # PREPARING IMAGES FOR PLAYER
 initImages = []
-for directoryPath in glob.glob(imagesPath):
+for directoryPath in glob.glob(imagesPathRead):
     for imgPath in glob.glob(os.path.join(directoryPath, "*.jpeg")):
         img = cv2.imread(imgPath, 0)       
         img = cv2.resize(img, (sizeY, sizeX))
@@ -57,7 +70,7 @@ detector = cv2.SimpleBlobDetector()
 
 # LOOP VIA IMAGES 
 #for i in range(nImages):
-for i in range(0,10):
+for i in range(0,imForTrain):
     valImage=thirdImages[i,:,:,:] #size: [sizeX, sizeY, 1] 
     testInput=np.expand_dims(valImage, 0) #size: [1, sizeX, sizeY, 1] 
     prediction = (model.predict(testInput))  #size [1, sizeX, sizeY, 9] 
@@ -76,17 +89,15 @@ for i in range(0,10):
         layer01 = prediction[0,:,:,nOrder[j]] *255
         layerTest = layer01.round() 
         #print(layerTest.min(), ' ... ', layerTest.max())
-        cv2.imwrite('cv_img.jpg', layerTest)
-
-        imBD = cv2.imread("cv_img.jpg", cv2.IMREAD_GRAYSCALE)
-        # Detect blobs.
-        # keypoints = detector.detect(imBD)
-
-        plt.subplot(2,6,j+2)
-        plt.imshow(prediction[0,:,:,nOrder[j]], cmap='gray')
-        #plt.title('Level: ', str(j))
+        cv2.imwrite(imagesPathWrite + imCoreName + str (i+1) + '_' + str(j) + '_' + layersNames[j] + '.jpg', layerTest)
+        if plotFlag:
+            imBD = cv2.imread(imagesPathWrite + imCoreName + str (i) + '_' + str(j) + '_' + layersNames[j] + '.jpg', cv2.IMREAD_GRAYSCALE)
+            plt.subplot(2,6,j+2)
+            plt.imshow(prediction[0,:,:,nOrder[j]], cmap='gray')
+            #plt.title('Level: ', str(j))
     
-    plt.subplot(2,6,11)
-    plt.title('Combines Prediction')
-    plt.imshow(predicted_img, cmap='jet')
-    plt.show()
+    if plotFlag:
+        plt.subplot(2,6,11)
+        plt.title('Combines Prediction')
+        plt.imshow(predicted_img, cmap='jet')
+        plt.show()
