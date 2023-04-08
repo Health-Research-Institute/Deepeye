@@ -10,20 +10,33 @@ import random
 
 np.set_printoptions(threshold=sys.maxsize)
 
+
 # PARAMETERS 
-# Image directory
-# imagesPath = 'OCT-Retinal-Layer-Segmenter/trainingSet/origImages/'
-imagesPath = '../Images/CT_RETINA/DIABETR_107/'
-imageIds = next(os.walk(imagesPath))[2]
+
+plotFlag = 1
+
+# Image directories
+imCoreName = 'MACHOLE' 
+imForTrain = 80
+imagePathThis  =  imCoreName + '_102/MH1-' + str(imForTrain)
+
+imagePathBase = '../Images/CT_RETINA/'
+imagesPathRead = imagePathBase + imagePathThis 
+imagesPathWrite = imagesPathRead +'_9Levels/'
+
+imageIds = next(os.walk(imagesPathRead))[2]
 #Parameters to use with player
 sizeX = 640
 sizeY = 640
 nClasses= 9 # Number of classes for segmentation
+#layers names 
+layersNames = ['BCG', 'NFL', 'GCL', 'INL', 'OPL' , 'ONL', 'ELZ', 'RPE', 'CHO']
+
 # End PARAMETERS
 
 # PREPARING IMAGES FOR PLAYER
 initImages = []
-for directoryPath in glob.glob(imagesPath):
+for directoryPath in glob.glob(imagesPathRead):
     for imgPath in glob.glob(os.path.join(directoryPath, "*.jpeg")):
         img = cv2.imread(imgPath, 0)       
         img = cv2.resize(img, (sizeY, sizeX))
@@ -43,9 +56,21 @@ model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accur
 model.load_weights('OCT-Retinal-Layer-Segmenter/retina_segmentation_8_layer.hdf5')
 # End LOAD MODEL
 
+#Sequence of layers per model:
+nOrder =  [0, 5, 3, 6, 1, 7, 4, 2, 8]
+# The number of corresponding areas (blobs) per layer from top to bottom
+# [2 var 2 2 2 1 1 1 1] (first upper layer is var)
+nFeatures = np.array([2, 3, 2, 2, 2, 1, 1, 1, 1])
+nFeaturesInOrder = nFeatures[nOrder]
+#print(nFeaturesInOrder)
+
+#set-up blob detector
+# Set up the detector with default parameters.
+detector = cv2.SimpleBlobDetector()
+
 # LOOP VIA IMAGES 
 #for i in range(nImages):
-for i in range(0,8):
+for i in range(0,imForTrain):
     valImage=thirdImages[i,:,:,:] #size: [sizeX, sizeY, 1] 
     testInput=np.expand_dims(valImage, 0) #size: [1, sizeX, sizeY, 1] 
     prediction = (model.predict(testInput))  #size [1, sizeX, sizeY, 9] 
@@ -56,26 +81,23 @@ for i in range(0,8):
     plt.subplot(261)
     plt.title('Testing Image')
     plt.imshow(valImage[:,:,0])
-    plt.subplot(262)
-    plt.imshow(prediction[0,:,:,0], cmap='jet')
-    plt.title('Background Predicition ')
-    plt.subplot(263)
-    plt.imshow(prediction[0,:,:,5], cmap='jet')
-    plt.subplot(264)
-    plt.imshow(prediction[0,:,:,3], cmap='jet')
-    plt.subplot(265)
-    plt.imshow(prediction[0,:,:,6], cmap='jet')
-    plt.subplot(266)
-    plt.imshow(prediction[0,:,:,1], cmap='jet')
-    plt.subplot(267)
-    plt.imshow(prediction[0,:,:,7], cmap='jet')
-    plt.subplot(268)
-    plt.imshow(prediction[0,:,:,4], cmap='jet')
-    plt.subplot(269)
-    plt.imshow(prediction[0,:,:,2], cmap='jet')
-    plt.subplot(2,6,10)
-    plt.imshow(prediction[0,:,:,8], cmap='jet')
-    plt.subplot(2,6,11)
-    plt.title('Combines Prediction')
-    plt.imshow(predicted_img, cmap='jet')
-    plt.show()
+
+    #loop through nine layers 
+    for j in range(0,9):
+        # Detect blobs.
+        
+        layer01 = prediction[0,:,:,nOrder[j]] *255
+        layerTest = layer01.round() 
+        #print(layerTest.min(), ' ... ', layerTest.max())
+        cv2.imwrite(imagesPathWrite + imCoreName + str (i+1) + '_' + str(j) + '_' + layersNames[j] + '.jpg', layerTest)
+        if plotFlag:
+            imBD = cv2.imread(imagesPathWrite + imCoreName + str (i) + '_' + str(j) + '_' + layersNames[j] + '.jpg', cv2.IMREAD_GRAYSCALE)
+            plt.subplot(2,6,j+2)
+            plt.imshow(prediction[0,:,:,nOrder[j]], cmap='gray')
+            #plt.title('Level: ', str(j))
+    
+    if plotFlag:
+        plt.subplot(2,6,11)
+        plt.title('Combines Prediction')
+        plt.imshow(predicted_img, cmap='jet')
+        plt.show()
