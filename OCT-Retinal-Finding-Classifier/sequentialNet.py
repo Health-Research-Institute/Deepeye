@@ -1,5 +1,4 @@
-import tensorflow as tf
-from tf.keras import layers, models
+from keras import layers, models
 
 # Define the CNN model
 ################################################################
@@ -18,6 +17,3 @@ def sequential_model(n_classes=5, IMG_HEIGHT=640, IMG_WIDTH=640, IMG_CHANNELS=1)
     model.add(layers.Dense(n_classes, activation='softmax'))
 
     return model
-
-    # # Train the model
-    # history = model.fit(x_train, y_train, epochs=10, batch_size=32, validation_data=(x_val, y_val))
