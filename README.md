@@ -1,12 +1,12 @@
 # DeepEye
 
-Install VS 2019
 Install VS Code: https://code.visualstudio.com/download
 Install Python 3.9.13: https://www.python.org/downloads/release/python-3913/
 Add C:\Users\User\AppData\Local\Programs\Python\Python39\ and C:\Users\User\AppData\Local\Programs\Python\Python39\Scripts\ to System Variable PATH
 In VS Code perform the following steps:
 	Choose Command Prompt for Terminal (next stages are according to https://docs.opencv.org/4.x/d5/de5/tutorial_py_setup_in_windows.html)
 	Update pip - run: python -m pip install --upgrade pip
+ 	Install virtual environment
 	Install Numpy package - run: pip install numpy
 	Install Pandas package - run: pip install pandas
 	Install Matplotlib - run: pip install matplotlib 
