@@ -13,9 +13,9 @@ np.set_printoptions(threshold=sys.maxsize)
 
 # PARAMETERS 
 
-plotFlag = 1
+plotFlag = 0
 
-# Image directories
+# Image directories: Next 3 lines change each time when new subset is played 
 imCoreName = 'MACHOLE' 
 imForTrain = 80
 imagePathThis  =  imCoreName + '_102/MH1-' + str(imForTrain)
