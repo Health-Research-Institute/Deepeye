@@ -16,9 +16,13 @@ In VS Code perform the following steps:
 	Install OpenCV - run: pip install opencv-python
 	If you have GPU: install CUDA from here
 	https://developer.nvidia.com/cuda-downloads
-	Install Pytorch (see https://pytorch.org/get-started/locally/#windows-pip) 
-	without GPU - run: pip3 install torch torchvision torchaudio
-	with GPU - run: pip3 install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu117 (or cu118 based on current version)
+	Install Pytorch:
+		For Windows (see https://pytorch.org/get-started/locally/#windows-pip) 
+			Without GPU - run: pip3 install torch torchvision torchaudio
+			With GPU - run: pip3 install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu117 (or cu118 based on current version)
+		For Mac with M1/M2:
+			Run: pip3 install --pre torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/nightly/cpu
+				 or: conda install pytorch torchvision torchaudio -c pytorch-nightly
 
 	General knowledge: to get the Python IDLE in VS Code environment - run "python" at cmd window.
 	
