@@ -33,5 +33,10 @@ In VS Code perform the following steps:
 		Install Tensorflow package - run: pip install tensorflow
 		Install Keras package - run: pip install keras
 		
+	For Keras on Mac:
+		pip install tensorflow-macos
+		pip install tensorflow-metal
+		conda install -c apple tensorflow-deps
+		
 	For manual labeling of points
 		pip install mpl_point_clicker
