@@ -1,120 +1,138 @@
-import os
-import cv2
-import numpy as np
+# Convolutional Neural Network
+
+# Importing the libraries
 import tensorflow as tf
-from tensorflow.keras import layers
-from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
-# Define image preprocessing parameters
-preprocess_params = {
-     # Normalize pixel values to [0, 1]
-    # Add additional preprocessing parameters as needed
-}
+from keras.preprocessing.image import ImageDataGenerator
+tf.__version__
 
-# Define the CNN model
-model = tf.keras.Sequential()
-model.add(layers.Conv2D(32, (3, 3), activation='relu', input_shape=(64, 64, 4)))
-model.add(layers.MaxPooling2D((2, 2)))
-model.add(layers.Conv2D(64, (3, 3), activation='relu'))
-model.add(layers.MaxPooling2D((2, 2)))
-model.add(layers.Flatten())
-model.add(layers.Dense(64, activation='relu'))
-model.add(layers.Dense(5, activation='softmax'))
+# Part 1 - Data Preprocessing
+
+# Preprocessing the Training set
+train_datagen = ImageDataGenerator(rescale = 1./255,
+                                   shear_range = 0.2,
+                                   zoom_range = 0.2,
+                                   horizontal_flip = True)
+training_set = train_datagen.flow_from_directory('/Users/saikoushikmupparapu/Desktop/Intern/Training/eyetype',
+                                                 target_size = (256, 256),
+                                                 batch_size = 32,
+                                                )
+input_shape = training_set[0][0].shape
+print("Input shape:", input_shape)
+# Preprocessing the Test set
+test_datagen = ImageDataGenerator(rescale = 1./255)
+test_set = test_datagen.flow_from_directory('/Users/saikoushikmupparapu/Desktop/Intern/Testing',
+                                            target_size = (256, 256),
+                                            batch_size = 32,
+                                           )
+# Part 2 - Building the CNN
+#print(train_datagen)
+# Initialising the CNN
+cnn = tf.keras.models.Sequential()
+
+# Step 1 - Convolution
+cnn.add(tf.keras.layers.Conv2D(filters=32, kernel_size=3, activation='relu', input_shape=[256, 256, 3]))
+
+# Step 2 - Pooling
+cnn.add(tf.keras.layers.MaxPool2D(pool_size=2, strides=2))
+
+# Adding a second convolutional layer
+cnn.add(tf.keras.layers.Conv2D(filters=32, kernel_size=3, activation='relu'))
+cnn.add(tf.keras.layers.MaxPool2D(pool_size=2, strides=2))
+
+# Step 3 - Flattening
+cnn.add(tf.keras.layers.Flatten())
+
+# Step 4 - Full Connection
+cnn.add(tf.keras.layers.Dense(units=128, activation='relu'))
+
+# Step 5 - Output Layer
+cnn.add(tf.keras.layers.Dense(units=5, activation='sigmoid'))
+
+# Part 3 - Training the CNN
+# Import the ModelCheckpoint callback
+from keras.callbacks import ModelCheckpoint
+
+# Part 3 - Training the CNN
+
+# Define the filepath where you want to save the best model
+# You can change the path and filename as per your requirement
+filepath = '/Users/saikoushikmupparapu/Desktop/Intern/best_model.h5'
+
+# Define the ModelCheckpoint callback to save the best model
+# The monitor parameter specifies the metric to monitor (val_accuracy in this case)
+# The mode parameter specifies whether to maximize ('max') or minimize ('min') the monitored metric
+# The save_best_only parameter ensures that only the best model based on validation accuracy is saved
+checkpoint = ModelCheckpoint(filepath, monitor='val_accuracy', mode='max', save_best_only=True, verbose=1)
+
+# Compile the CNN
+cnn.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+
+# Training the CNN on the Training set and evaluating it on the Test set
+# Pass the ModelCheckpoint callback to the callbacks parameter of the fit method
+cnn.fit(x=training_set, validation_data=test_set, epochs=100, callbacks=[checkpoint])
+# Compiling the CNN
+cnn.compile(optimizer = 'adam', loss = 'binary_crossentropy', metrics = ['accuracy'])
 
 
 
 
+import numpy as np
 
-# Compile the model
-model.compile(optimizer='adam',
-              loss='categorical_crossentropy',
-              metrics=['accuracy'])
+from tensorflow.keras.preprocessing import image
+test_image = image.load_img('/Users/saikoushikmupparapu/Desktop/Intern/Testing/DR24Test/DR85.jpeg', target_size = (256, 256))
+test_image = image.img_to_array(test_image)
+test_image = np.expand_dims(test_image, axis = 0)
+result = cnn.predict(test_image)
+print(result)
+print(training_set.class_indices)
+print(result[0][0])
+if result[0][0] == 1:
+    prediction = 'ARI'
+elif result[0][1]==1:
+    prediction = 'CRI'
+elif result[0][2]==1:
+    prediction = 'DRI'
+elif result[0][3]==1:
+    prediction = 'MH1'
+else:
+    prediction='NR1'
 
-# Define the function to load images from a folder
-def load_images_from_folder(folder_path):
-    images = []
-    for filename in os.listdir(folder_path):
-        img_path = os.path.join(folder_path, filename)
-        img = cv2.imread(img_path)
-        if img is not None:
-            img = cv2.cvtColor(img, cv2.IMREAD_GRAYSCALE)  # Convert BGR to RGB
-            img = cv2.resize(img, (64, 64))  # Resize image if necessary
-            images.append(img)
-    return images
+print("22222222")
+print(prediction)
+test_accuracy = cnn.evaluate(test_set)[1]
 
-# Prepare the data
-x_col = []  # List to store image packs
-y_col = []  # List to store corresponding labels
-eye_folderpath ='/Users/saikoushikmupparapu/Desktop/Intern/Training/eyetype/'
-skin_folderpath='/Users/saikoushikmupparapu/Desktop/Intern/Training/skinimage/'
-# Iterate over each disease type
-eye_fold_name=["AR1-45","CR1-80","DR1-83","MH1-80","NR1-160"]
-skin_fold_name=["AR1-45_9","CR1-80_9","DR1-83_9","MH1-80_9","NR1-160_9"]
-for disease_type in range(0, 5):
-    # Load eye images for the disease type
-    eye_folder_path = eye_folderpath+eye_fold_name[disease_type]
-    eye_images = load_images_from_folder(eye_folder_path)
+# Print the test set accuracy
+print("Test set accuracy: {:.2f}%".format(test_accuracy * 100))
+# ... (previous code remains unchanged)
 
-    # Load skin images for the disease type
-    skin_folder_path = skin_folderpath+skin_fold_name[disease_type]
-    skin_images = load_images_from_folder(skin_folder_path)
+# Part 4 - Making predictions on the Test set
 
-    # Iterate over each eye image
+# Get the class indices and labels from the training set
+class_indices = training_set.class_indices
+labels = list(class_indices.keys())
+
+# Get the total number of samples in the test set
+total_samples = len(test_set.filenames)
+
+# Generate predictions for the entire test set
+predictions = cnn.predict(test_set, steps=total_samples // test_set.batch_size + 1)
+
+# Convert the predictions (probabilities) to binary predictions (0 or 1) based on a threshold (0.5 in this case)
+binary_predictions = (predictions > 0.5).astype(int)
+
+# Get the ground truth labels for the test set
+ground_truth_labels = test_set.labels
+
+# Print the results for each image in the test set
+print("Results for the Test set:")
+count=0
+for i in range(total_samples):
+    image_path = test_set.filepaths[i]
+    predicted_label = labels[np.argmax(predictions[i])]
+    ground_truth_label = labels[ground_truth_labels[i]]
+    if predicted_label==ground_truth_label:
+      count=count+1
     
-
-
-
-
-    for i in range(len(eye_images)):
-        eye_image = eye_images[i]
-        skin_pack = skin_images[i * 9:(i + 1) * 9]  # Extract the corresponding 9 skin images
-        eye_image = np.expand_dims(eye_image, axis=-1)
-
-        skin_pack = [np.expand_dims(img, axis=-1) for img in skin_pack]
-        image_pack = np.concatenate([eye_image, *skin_pack], axis=-1)
-        image_pack = np.expand_dims(image_pack, axis=0)  # Add an extra dimension for the batch size
-        x_col.append(image_pack)
-
-        # Create the corresponding label for the image pack
-        label = disease_type  # Assuming disease types start from 1, adjust accordingly if needed
-        y_col.append(label)
-        #print(label)
-x_col = np.concatenate(x_col, axis=0)
-y_col = np.array(y_col)
-
-print("Shape of x_col:", x_col.shape)
-print("Shape of y_col:", y_col.shape)
-y_col = np.repeat(y_col, 10) 
-# Convert the lists to NumPy arrays
-num_classes = 5
-x_col = np.transpose(x_col, (0, 1, 2, 4, 3))  # Transpose the dimensions to match the expected input shape
-x_col = x_col.reshape((-1, 64, 64, 4))  # Reshape to (448, 64, 64, 1)
-y_col = tf.keras.utils.to_categorical(y_col, num_classes)
-# Image preprocessing
-datagen = ImageDataGenerator(**preprocess_params)
-datagen.fit(x_col)
-
-# Train the model
-model.fit(datagen.flow(x_col, y_col, batch_size=32), epochs=2)
-
-
-image_path = '/Users/saikoushikmupparapu/Desktop/Intern/CT_RETINA/AGE_RMD_55/AR10Test/AMRD49.jpeg'
-image = cv2.imread(image_path)
-image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
-image = cv2.resize(image, (64, 64))
-image = image.astype(np.float32) / 255.0
-
-# Expand dimensions and reshape
-input_image = np.expand_dims(image, axis=0)
-input_image = np.expand_dims(input_image, axis=-1)
-input_image = np.repeat(input_image, 4, axis=-1)
-
-# Make predictions
-predictions = model.predict(input_image)
-
-
-# Interpret predictions
-predicted_class = np.argmax(predictions[0])
-disease_type = predicted_class + 1  # Assuming disease types start from 1
-
-print("Predicted Disease Type:", disease_type)
+    print("Image: {}, Predicted Label: {}, Ground Truth Label: {}".format(image_path, predicted_label, ground_truth_label))
+print(count)
