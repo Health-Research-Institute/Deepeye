@@ -99,3 +99,61 @@ class DenseNet121(nn.Module):
     def forward(self, x):
         x = self.model(x)
         return x
+    
+class DataPreprocessingPlayer(Dataset):
+
+    classPaths = {
+    
+    'AGE_RMD': ['../Images/CT_RETINA/AGE_RMD_55/ARTest9L', 27],
+    'CSR':     ['../Images/CT_RETINA/CSR_102/CRTest9L', 62],
+    'DIABETR': [ '../Images/CT_RETINA/DIABETR_107/DRTest9L', 65],
+    'MACHOLE': ['../Images/CT_RETINA/MACHOLE_102/MHTest9L', 62],
+    'NORMAL':  ['../Images/CT_RETINA/NORMAL_206/NRTest9L', 106] 
+        }
+    
+    def __init__(self, classPaths=classPaths):
+        
+        self.image_paths = []
+        self.labels = []
+        self.images = []
+
+        self.classes = eval(os.getenv("CLASSES"))
+        self.classEncoding = create_classEncoding(self.classes)
+        self.nImLevelsData = eval(os.getenv("nImLevelsData"))
+        self.downImageSize = eval(os.getenv("downImageSize"))
+    
+        # image paths
+        for imCoreName in (self.classEncoding.keys()):
+            temp_paths = []
+            for directoryPath in glob.glob(classPaths[imCoreName][0]):
+                for imgPath in glob.glob(os.path.join(directoryPath, "*.jpg")):
+                    temp_paths.append(imgPath)
+
+            # labels 
+            labels_list = [imCoreName] * classPaths[imCoreName][1] * self.nImLevelsData
+
+            for label in labels_list:
+                labelTensor = torch.FloatTensor(np.zeros(len(self.classes)))
+
+                labelTensor = labelTensor.add(self.classEncoding[label])
+                self.labels.append(labelTensor)
+
+            img_paths = temp_paths[:classPaths[imCoreName][1] * self.nImLevelsData] 
+            self.image_paths.append(img_paths)
+
+            for image_path in img_paths:
+                img = cv2.imread(image_path,0) 
+                img = cv2.resize(img, (self.downImageSize, self.downImageSize), interpolation = cv2.INTER_AREA)
+                img = np.reshape(img, (*img.shape, 1))
+                img = np.transpose(img, (2, 0, 1))
+                self.images.append(img)
+            
+        self.image_paths = [y for x in self.image_paths for y in x]
+        self.stacked_images, self.stacked_labels, self.stacked_image_names  = create_image_stack(self.images, self.labels, self.image_paths, self.nImLevelsData)  
+                
+    def __getitem__(self, index):
+        # preprocess and return single image stack of dim 8*1*224*224
+        return self.stacked_images[index], self.stacked_labels[index], self.stacked_image_names[index]
+    
+    def __len__(self):
+        return len(self.stacked_images)
