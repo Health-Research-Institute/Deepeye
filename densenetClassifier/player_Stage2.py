@@ -12,6 +12,7 @@ import os.path
 from helperFunctions import tile
 from analysisFunctions import analyseTest
 from dataClasses import DataPreprocessingPlayer
+from dataClasses import DataPreprocessing
 from dataClasses import DenseNet121
 import dotenv
 dotenv.load_dotenv()
@@ -26,7 +27,7 @@ else:
 print(f"Using device: {device}")
 
 # Data Preprocessing 
-data = DataPreprocessingPlayer()
+data = DataPreprocessing()
 
 train_set, test_set = random_split(data, [0, 1])
 testloader = torch.utils.data.DataLoader(test_set, batch_size=1, shuffle=False)
@@ -41,19 +42,12 @@ else:
     model = DenseNet121()
     model = nn.DataParallel(model)
 
-#parameters to load models and save logfile
-modelPath = os.getenv('player_load_MP')
-downImageSize = os.getenv('downImageSize')
-useImLevels = eval(os.getenv("useImLevels"))
-nClasses = os.getenv('nClasses')
-modelFname = "dense" + str(nClasses) + "class" + str(downImageSize) + "pix.pt"
-modelPathFile = modelPath + modelFname
-
 #load model
-model = torch.load(modelPathFile)
+model = torch.load(os.getenv('goldenModel'))
 
-logFname = "log" + str(nClasses) + "class" + str(downImageSize) + ".csv"
-logPathFile = modelPath + logFname
+#forming log file
+logFname = "log" + str(os.getenv('nClasses')) + "class" + str(os.getenv('downImageSize')) + ".csv"
+logPathFile = os.getenv('player_load_MP') + logFname
 logFile = open(logPathFile, "a")
 titleString = "ProblemType ImageName C# FitScore "
 logFile.write(titleString + "\n")
@@ -67,6 +61,7 @@ sevenLev = 0
 problem = 0
 
 #main loop
+useImLevels = eval(os.getenv("useImLevels"))
 with torch.no_grad():
     for i, (images, labels, image_names) in enumerate(testloader, 0):
         if device == "mps":

@@ -22,15 +22,15 @@ class DataPreprocessing(Dataset):
         imagesFromEachClass = 18
     else:
         subdir = 'Test'
-        imagesFromEachClass = 106
+        imagesFromEachClass = 152
 
     classPaths = {
     
-    'AGE_RMD': ['../../Images/CT_RETINA/AGE_RMD_55/AR' + subdir + '9L', min(imagesFromEachClass, 27)],
-    'CSR':     ['../../Images/CT_RETINA/CSR_102/CR' + subdir + '9L', min(imagesFromEachClass,62)],
-    'DIABETR': [ '../../Images/CT_RETINA/DIABETR_107/DR' + subdir + '9L', min(imagesFromEachClass,65)],
-    'MACHOLE': ['../../Images/CT_RETINA/MACHOLE_102/MH' + subdir + '9L', min(imagesFromEachClass,62)],
-    'NORMAL':  ['../../Images/CT_RETINA/NORMAL_206/NR' + subdir + '9L', min(3*imagesFromEachClass,106)] 
+    'AMRD': ['../../Images/CT_RETINA/AMRD/' + subdir + '9L', min(imagesFromEachClass, 37)],
+    'CSR':  ['../../Images/CT_RETINA/CSR/' + subdir + '9L', min(imagesFromEachClass,84)],
+    'DR':   [ '../../Images/CT_RETINA/DR/' + subdir + '9L', min(imagesFromEachClass,89)],
+    'MH':   ['../../Images/CT_RETINA/MH/' + subdir + '9L', min(imagesFromEachClass,84)],
+    'NORMAL': ['../../Images/CT_RETINA/NORMAL/' + subdir + '9L', min(3*imagesFromEachClass,152)] 
         }
     
     def __init__(self, classPaths=classPaths):
@@ -102,14 +102,24 @@ class DenseNet121(nn.Module):
     
 class DataPreprocessingPlayer(Dataset):
 
+    testOnly = eval(os.getenv("testOnly"))
+    if testOnly == 'False': #training regime
+        subdir = 'Train'
+        imagesFromEachClass = 18
+    else:
+        subdir = 'Test'
+        imagesFromEachClass = 152
+
     classPaths = {
     
-    'AGE_RMD': ['../Images/CT_RETINA/AGE_RMD_55/ARTest9L', 27],
-    'CSR':     ['../Images/CT_RETINA/CSR_102/CRTest9L', 62],
-    'DIABETR': [ '../Images/CT_RETINA/DIABETR_107/DRTest9L', 65],
-    'MACHOLE': ['../Images/CT_RETINA/MACHOLE_102/MHTest9L', 62],
-    'NORMAL':  ['../Images/CT_RETINA/NORMAL_206/NRTest9L', 106] 
+    'AMRD': ['../Images/CT_RETINA/AMRD/' + subdir + '9L', min(imagesFromEachClass, 37)],
+    'CSR':  ['../Images/CT_RETINA/CSR/' + subdir + '9L', min(imagesFromEachClass,84)],
+    'DR':   [ '../Images/CT_RETINA/DR/' + subdir + '9L', min(imagesFromEachClass,89)],
+    'MH':   ['../Images/CT_RETINA/MH/' + subdir + '9L', min(imagesFromEachClass,84)],
+    'NORMAL': ['../Images/CT_RETINA/NORMAL/' + subdir + '9L', min(3*imagesFromEachClass,152)] 
         }
+
+
     
     def __init__(self, classPaths=classPaths):
         
