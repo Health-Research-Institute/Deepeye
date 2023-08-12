@@ -13,25 +13,25 @@ import dotenv
 dotenv.load_dotenv()
 
 class DataPreprocessing(Dataset):
-    
-    # classPaths --> className: [path, #training_samples]
 
-    testOnly = eval(os.getenv("testOnly"))
-    if testOnly == 'False': #training regime
-        subdir = 'Train'
-        imagesFromEachClass = 18
-    else:
-        subdir = 'Test'
-        imagesFromEachClass = 152
-
-    classPaths = {
-    
-    'AMRD': ['../../Images/CT_RETINA/AMRD/' + subdir + '9L', min(imagesFromEachClass, 37)],
-    'CSR':  ['../../Images/CT_RETINA/CSR/' + subdir + '9L', min(imagesFromEachClass,84)],
-    'DR':   [ '../../Images/CT_RETINA/DR/' + subdir + '9L', min(imagesFromEachClass,89)],
-    'MH':   ['../../Images/CT_RETINA/MH/' + subdir + '9L', min(imagesFromEachClass,84)],
-    'NORMAL': ['../../Images/CT_RETINA/NORMAL/' + subdir + '9L', min(3*imagesFromEachClass,152)] 
+    trainMode = eval(os.getenv("trainMode"))
+    if trainMode: 
+        classPaths = {
+        'AMRD': ['../../Images/CT_RETINA/AMRD/Train9L', 21],
+        'CSR':  ['../../Images/CT_RETINA/CSR/Train9L', 21],
+        'DR':   [ '../../Images/CT_RETINA/DR/Train9L', 20],
+        'MH':   ['../../Images/CT_RETINA/MH/Train9L', 19],
+        'NORMAL': ['../../Images/CT_RETINA/NORMAL/Train9L', 61]
         }
+    else: 
+        classPaths = {
+        'AMRD': ['../../Images/CT_RETINA/AMRD/Test9L', 34],
+        'CSR':  ['../../Images/CT_RETINA/CSR/Test9L', 81],
+        'DR':   [ '../../Images/CT_RETINA/DR/Test9L', 87],
+        'MH':   ['../../Images/CT_RETINA/MH/Test9L', 83],
+        'NORMAL': ['../../Images/CT_RETINA/NORMAL/Test9L', 145]
+        }
+            
     
     def __init__(self, classPaths=classPaths):
         
@@ -100,70 +100,3 @@ class DenseNet121(nn.Module):
         x = self.model(x)
         return x
     
-class DataPreprocessingPlayer(Dataset):
-
-    testOnly = eval(os.getenv("testOnly"))
-    if testOnly == 'False': #training regime
-        subdir = 'Train'
-        imagesFromEachClass = 18
-    else:
-        subdir = 'Test'
-        imagesFromEachClass = 152
-
-    classPaths = {
-    
-    'AMRD': ['../Images/CT_RETINA/AMRD/' + subdir + '9L', min(imagesFromEachClass, 37)],
-    'CSR':  ['../Images/CT_RETINA/CSR/' + subdir + '9L', min(imagesFromEachClass,84)],
-    'DR':   [ '../Images/CT_RETINA/DR/' + subdir + '9L', min(imagesFromEachClass,89)],
-    'MH':   ['../Images/CT_RETINA/MH/' + subdir + '9L', min(imagesFromEachClass,84)],
-    'NORMAL': ['../Images/CT_RETINA/NORMAL/' + subdir + '9L', min(3*imagesFromEachClass,152)] 
-        }
-
-
-    
-    def __init__(self, classPaths=classPaths):
-        
-        self.image_paths = []
-        self.labels = []
-        self.images = []
-
-        self.classes = eval(os.getenv("CLASSES"))
-        self.classEncoding = create_classEncoding(self.classes)
-        self.nImLevelsData = eval(os.getenv("nImLevelsData"))
-        self.downImageSize = eval(os.getenv("downImageSize"))
-    
-        # image paths
-        for imCoreName in (self.classEncoding.keys()):
-            temp_paths = []
-            for directoryPath in glob.glob(classPaths[imCoreName][0]):
-                for imgPath in glob.glob(os.path.join(directoryPath, "*.jpg")):
-                    temp_paths.append(imgPath)
-
-            # labels 
-            labels_list = [imCoreName] * classPaths[imCoreName][1] * self.nImLevelsData
-
-            for label in labels_list:
-                labelTensor = torch.FloatTensor(np.zeros(len(self.classes)))
-
-                labelTensor = labelTensor.add(self.classEncoding[label])
-                self.labels.append(labelTensor)
-
-            img_paths = temp_paths[:classPaths[imCoreName][1] * self.nImLevelsData] 
-            self.image_paths.append(img_paths)
-
-            for image_path in img_paths:
-                img = cv2.imread(image_path,0) 
-                img = cv2.resize(img, (self.downImageSize, self.downImageSize), interpolation = cv2.INTER_AREA)
-                img = np.reshape(img, (*img.shape, 1))
-                img = np.transpose(img, (2, 0, 1))
-                self.images.append(img)
-            
-        self.image_paths = [y for x in self.image_paths for y in x]
-        self.stacked_images, self.stacked_labels, self.stacked_image_names  = create_image_stack(self.images, self.labels, self.image_paths, self.nImLevelsData)  
-                
-    def __getitem__(self, index):
-        # preprocess and return single image stack of dim 8*1*224*224
-        return self.stacked_images[index], self.stacked_labels[index], self.stacked_image_names[index]
-    
-    def __len__(self):
-        return len(self.stacked_images)

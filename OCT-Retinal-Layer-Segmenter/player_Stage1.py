@@ -38,11 +38,10 @@ for testClass in range(0,5):
 
     imagesPathRead = '../Images/CT_RETINA/' + classNames[testClass] + '/' + folderN
     imagesPathWrite ='../Images/CT_RETINA/' + classNames[testClass] + '/' + folderN + '9L'
-
     if not os.path.isdir(imagesPathWrite):
         os.makedirs(imagesPathWrite)
-    
     imagesPathWrite = imagesPathWrite + '/'
+    
     imageIds = next(os.walk(imagesPathRead))[2]
 
     # PREPARING IMAGES FOR PLAYER
@@ -55,10 +54,8 @@ for testClass in range(0,5):
         
     initImages = np.array(initImages) #size is [nImages, sizeX, sizeY]  
     nImages, w, h = initImages.shape
-    #print( 'number of images', nImages)
     secImages = np.expand_dims(initImages, axis=3) #size: [nImages, sizeX, sizeY, 1]  
     thirdImages = normalize(secImages, axis=1) #size: [nImages, sizeX, sizeY, 1] 
-    # End PREPARING 
 
     # LOOP VIA IMAGES 
     for i in range(0,len(imageIds)):
