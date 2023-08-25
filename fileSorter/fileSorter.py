@@ -23,4 +23,4 @@ for testClass in range(0,nClasses):
         file_name = file_names[trainInd[i]] 
         shutil.move(os.path.join(imagesPathRead, file_name), imagesPathWrite)
 
-print('Moving Files from Train to Test is done')   
+print('Moving Files from Test to Train is done')   
