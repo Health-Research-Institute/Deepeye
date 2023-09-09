@@ -13,7 +13,7 @@ train_datagen = ImageDataGenerator(rescale = 1./255,
                                    shear_range = 0.2,
                                    zoom_range = 0.2,
                                    horizontal_flip = True)
-training_set = train_datagen.flow_from_directory('/Users/saikoushikmupparapu/Desktop/Intern/Training/eyetype',
+training_set = train_datagen.flow_from_directory('../../Images/CT_RETINA/Train',
                                                  target_size = (256, 256),
                                                  batch_size = 32,
                                                 )
@@ -21,7 +21,7 @@ input_shape = training_set[0][0].shape
 print("Input shape:", input_shape)
 # Preprocessing the Test set
 test_datagen = ImageDataGenerator(rescale = 1./255)
-test_set = test_datagen.flow_from_directory('/Users/saikoushikmupparapu/Desktop/Intern/Testing',
+test_set = test_datagen.flow_from_directory('../../Images/CT_RETINA/Test',
                                             target_size = (256, 256),
                                             batch_size = 32,
                                            )
@@ -57,7 +57,7 @@ from keras.callbacks import ModelCheckpoint
 
 # Define the filepath where you want to save the best model
 # You can change the path and filename as per your requirement
-filepath = '/Users/saikoushikmupparapu/Desktop/Intern/best_model.h5'
+filepath = '../../Models/SaiModel/best_model.h5'
 
 # Define the ModelCheckpoint callback to save the best model
 # The monitor parameter specifies the metric to monitor (val_accuracy in this case)
@@ -70,7 +70,7 @@ cnn.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
 
 # Training the CNN on the Training set and evaluating it on the Test set
 # Pass the ModelCheckpoint callback to the callbacks parameter of the fit method
-cnn.fit(x=training_set, validation_data=test_set, epochs=100, callbacks=[checkpoint])
+cnn.fit(x=training_set, validation_data=test_set, epochs=70, callbacks=[checkpoint])
 # Compiling the CNN
 cnn.compile(optimizer = 'adam', loss = 'binary_crossentropy', metrics = ['accuracy'])
 
@@ -80,7 +80,7 @@ cnn.compile(optimizer = 'adam', loss = 'binary_crossentropy', metrics = ['accura
 import numpy as np
 
 from tensorflow.keras.preprocessing import image
-test_image = image.load_img('/Users/saikoushikmupparapu/Desktop/Intern/Testing/DR24Test/DR85.jpeg', target_size = (256, 256))
+test_image = image.load_img('../../Images/CT_RETINA/Test/DR24Test/DR85.jpeg', target_size = (256, 256))
 test_image = image.img_to_array(test_image)
 test_image = np.expand_dims(test_image, axis = 0)
 result = cnn.predict(test_image)
