@@ -1,6 +1,6 @@
 import os
 import numpy as np
-from tensorflow.keras.preprocessing import image
+from keras.preprocessing import image
 from keras.models import load_model
 from sklearn.metrics import classification_report, confusion_matrix
 
