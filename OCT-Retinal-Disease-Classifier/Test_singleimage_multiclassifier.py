@@ -1,5 +1,5 @@
 import numpy as np
-from tensorflow.keras.preprocessing import image
+from keras.preprocessing import image
 from keras.models import load_model
 
 # Load the trained transfer learning model
