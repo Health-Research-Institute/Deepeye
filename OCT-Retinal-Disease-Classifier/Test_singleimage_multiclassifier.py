@@ -3,11 +3,11 @@ from keras.preprocessing import image
 from keras.models import load_model
 
 # Load the trained transfer learning model
-model_path = '/Users/saikoushikmupparapu/Desktop/Intern/best_tl_model_1.h5'
+model_path = '/Users/vkluzner/Private/git/Models/SaiModels/best_tl_multi_model.h5'
 tl_model = load_model(model_path)
 
 # Load and preprocess a single input image for prediction
-input_image_path = '/Users/saikoushikmupparapu/Desktop/Intern/Testing/AR/AMRD46.jpeg'
+input_image_path = '/Users/vkluzner/Private/git/Images/SaiImages/MultiClassifier/Testing/AR/AMRD46.jpeg'
 input_image = image.load_img(input_image_path, target_size=(256, 256))  # Resize to match model input size
 input_image_array = image.img_to_array(input_image)
 input_image_array = np.expand_dims(input_image_array, axis=0)

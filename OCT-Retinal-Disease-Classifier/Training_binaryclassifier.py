@@ -18,7 +18,7 @@ train_datagen = ImageDataGenerator(
     horizontal_flip=True
 )
 training_set = train_datagen.flow_from_directory(
-    '/Users/saikoushikmupparapu/Desktop/Intern/Binary/Training/eyetype',  # Change the path
+    '/Users/vkluzner/Private/git/Images/SaiImages/BinaryClassifier/Training/eyetype',  # Change the path
     target_size=(256, 256),
     batch_size=32
 )
@@ -27,14 +27,14 @@ training_set = train_datagen.flow_from_directory(
 training_image_filenames = training_set.filenames
 
 # Save the training image filenames to a file
-with open('/Users/saikoushikmupparapu/Desktop/Intern/binary_training_image_filenames.txt', 'w') as file:
+with open('binary_training_image_filenames.txt', 'w') as file:
     for filename in training_image_filenames:
         file.write(filename + '\n')
 
 # Preprocessing the Test set
 test_datagen = ImageDataGenerator(rescale=1./255)
 test_set = test_datagen.flow_from_directory(
-    '/Users/saikoushikmupparapu/Desktop/Intern/Binary/Testing',  # Change the path
+    '/Users/vkluzner/Private/git/Images/SaiImages/BinaryClassifier/Testing',  # Change the path
     target_size=(256, 256),
     batch_size=32
 )
@@ -63,7 +63,7 @@ tl_model.summary()
 
 # Part 3 - Training the Transfer Learning Model
 # Define the filepath where you want to save the best model
-filepath = '/Users/saikoushikmupparapu/Desktop/Intern/best_tl_binary_model.h5'
+filepath = '/Users/vkluzner/Private/git/Models/SaiModels/best_tl_binary_model.h5'
 
 # Define the ModelCheckpoint callback
 checkpoint = ModelCheckpoint(filepath, monitor='val_accuracy', mode='max', save_best_only=True, verbose=1)
@@ -78,7 +78,7 @@ plt.xlabel('Epoch')
 plt.ylabel('Accuracy')
 plt.legend()
 plt.xticks(range(1, len(history.history['accuracy']) + 1))  # Set x-axis ticks to integer epochs
-plt.savefig('/Users/saikoushikmupparapu/Desktop/Intern/bi_training_accuracy_plot.png')
+plt.savefig('/Users/vkluzner/Private/git/Figures/SaiFigures/bi_training_accuracy_plot.png')
 plt.show()
 
 # Plot validation accuracy
@@ -88,11 +88,11 @@ plt.xlabel('Epoch')
 plt.ylabel('Accuracy')
 plt.legend()
 plt.xticks(range(1, len(history.history['val_accuracy']) + 1))  # Set x-axis ticks to integer epochs
-plt.savefig('/Users/saikoushikmupparapu/Desktop/Intern/bi_validation_accuracy_plot.png')
+plt.savefig('/Users/vkluzner/Private/git/Figures/SaiFigures/bi_validation_accuracy_plot.png')
 plt.show()
 
 # Save the output logs
-sys.stdout = open('/Users/saikoushikmupparapu/Desktop/Intern/binary_output_logs.txt', 'w')
+sys.stdout = open('/Users/vkluzner/Private/git/Logs/SaiLogs/binary_output_logs.txt', 'w')
 print(history.history)
 sys.stdout.close()
 
