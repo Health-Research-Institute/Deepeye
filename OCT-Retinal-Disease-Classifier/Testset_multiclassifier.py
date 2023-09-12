@@ -3,14 +3,15 @@ import numpy as np
 from keras.preprocessing import image
 from keras.models import load_model
 from sklearn.metrics import classification_report, confusion_matrix
-from AbsolutePath import AbsolutePath
+
+deepeye_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")) # Folder containing Deepeye repo
 
 # Load the trained transfer learning model
-model_path = AbsolutePath + 'Models/SaiModels/best_tl_multi_model.h5'
+model_path = os.path.join(deepeye_path, 'Models/SaiModels/best_tl_multi_model.h5')
 tl_model = load_model(model_path)
 
 # Define the path to the test images directory
-test_images_dir = AbsolutePath + 'Images/SaiImages/MultiClassifier/Testing'
+test_images_dir = os.path.join(deepeye_path, 'Images/SaiImages/MultiClassifier/Testing')
 
 # Get the list of class labels (subdirectories)
 class_labels = sorted(os.listdir(test_images_dir))
@@ -31,7 +32,7 @@ predicted_labels = []
 
 # Loop through each class label and its images
 for label in class_labels:
-    label_dir = os.path.join(AbsolutePath + 'Images/SaiImages/MultiClassifier/Testing', label)
+    label_dir = os.path.join(os.path.join(deepeye_path, 'Images/SaiImages/MultiClassifier/Testing'), label)
     image_files = os.listdir(label_dir)
     for image_file in image_files:
         image_path = os.path.join(label_dir, image_file)
