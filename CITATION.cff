@@ -1,0 +1,14 @@
+cff-version: 1.2.0
+message: "If you use this software in your work, please cite it using the following metadata."
+authors:
+- family-names: "Kluzner"
+  given-names: "Vladimir"
+  orcid: "https://orcid.org/0009-0000-5844-661X"
+- family-names: "Naimark"
+  given-names: "Leonid"
+  orcid: "https://orcid.org/XXXX-XXXX-XXXX-XXXX"
+title: "DeepEye"
+version: 0.0.1
+doi: <insert zenodo DOI>
+date-released: 2023-01-01
+url: "https://github.com/Health-Research-Institute/Deepeye"
