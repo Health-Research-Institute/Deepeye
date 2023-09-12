@@ -1,14 +1,16 @@
 import numpy as np
 from keras.preprocessing import image
 from keras.models import load_model
-from AbsolutePath import AbsolutePath
+import os
+
+deepeye_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")) # Folder containing Deepeye repo
 
 # Load the trained transfer learning model
-model_path = AbsolutePath + 'Models/SaiModels/best_tl_multi_model.h5'
+model_path = os.path.join(deepeye_path, 'Models/SaiModels/best_tl_multi_model.h5')
 tl_model = load_model(model_path)
 
 # Load and preprocess a single input image for prediction
-input_image_path = AbsolutePath + 'Images/SaiImages/MultiClassifier/Testing/AR/AMRD46.jpeg'
+input_image_path = os.path.join(deepeye_path, 'Images/SaiImages/MultiClassifier/Testing/AR/AMRD46.jpeg')
 input_image = image.load_img(input_image_path, target_size=(256, 256))  # Resize to match model input size
 input_image_array = image.img_to_array(input_image)
 input_image_array = np.expand_dims(input_image_array, axis=0)
