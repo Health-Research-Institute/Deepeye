@@ -20,7 +20,7 @@ At command prompt (for example, in VS Code environment):
 		Install mpl_point_clicker: pip install mpl_point_clicker --upgrade
 
  	For json_mask_reading.ipynb:
-		Install Numpy package - run: pip install numpy --upgrade``
+		Install Numpy package - run: pip install numpy --upgrade
 		Install PIL package - run: pip install pillow --upgrade
 		Install OpenCV - run: pip install opencv-python --upgrade
 		Install Scikit-learn package - run: pip install scikit-learn --upgrade
