@@ -7,7 +7,7 @@ Add C:\Users\User\AppData\Local\Programs\Python\Python39\ and C:\Users\User\AppD
 Install Conda (according to machine):
 	For Windows: https://docs.conda.io/projects/conda/en/latest/user-guide/install/windows.html
 	For Mac: https://docs.conda.io/projects/conda/en/4.6.0/user-guide/install/macos.html
-	Make sure you have the latest version of Conda: conda update -n base -c defaults conda
+	Make sure you have the latest version of Conda - run: conda update -n base -c defaults conda
 
 If you have GPU (Windows or Linux), install CUDA: https://developer.nvidia.com/cuda-downloads
 
@@ -20,14 +20,14 @@ At command prompt (for example, in VS Code environment):
 		Install mpl_point_clicker: pip install mpl_point_clicker --upgrade
 
  	For json_mask_reading.ipynb:
-		Install Numpy package - run: pip install numpy --upgrade
+		Install Numpy package - run: pip install numpy --upgrade``
 		Install PIL package - run: pip install pillow --upgrade
 		Install OpenCV - run: pip install opencv-python --upgrade
 		Install Scikit-learn package - run: pip install scikit-learn --upgrade
 		Install Matplotlib - run: pip install matplotlib --upgrade
 
 	For multiclass_segmentation.ipynb:
-		Install Tensorflow package - run: pip install tensorflow --upgrade (Keras and tensorflow-macos installations are included)
+		Install Tensorflow package - run: pip install tensorflow --upgrade (Keras (and tensorflow-macos for Mac) installations are included)
 		For Keras on Mac:
 			pip install tensorflow-metal --upgrade
 			conda install -c apple tensorflow-deps=2.10.0 (may not install due to incompatibility, but may not be necessary)
@@ -41,5 +41,12 @@ At command prompt (for example, in VS Code environment):
 				Run: pip install --pre torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/nightly/cpu
 					 or: conda install pytorch torchvision torchaudio -c pytorch-nightly
 		Install dotenv: pip install python-dotenv --upgrade
+
+	Choose appropriate interpreter:
+		CTRL (CMD) + SHIFT + P
+		Choose "Python: Select Interpreter"
+		Choose Python 3.11.4 ('deepeye')
+		In case of work with Jupiter Notebook choose the interpreter in the right upper corner of VS Code window.
+
 
 General knowledge: to get the Python IDLE in VS Code environment - run "python" at cmd window.
