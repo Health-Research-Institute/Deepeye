@@ -6,7 +6,6 @@ import cv2
 import numpy as np
 from matplotlib import pyplot as plt
 import sys
-import random
 
 np.set_printoptions(threshold=sys.maxsize)
 
@@ -91,7 +90,8 @@ for i in range(0,imForTrain):
         #print(layerTest.min(), ' ... ', layerTest.max())
         cv2.imwrite(imagesPathWrite + imCoreName + str (i+1) + '_' + str(j) + '_' + layersNames[j] + '.jpg', layerTest)
         if plotFlag:
-            imBD = cv2.imread(imagesPathWrite + imCoreName + str (i) + '_' + str(j) + '_' + layersNames[j] + '.jpg', cv2.IMREAD_GRAYSCALE)
+            imBD = cv2.imread(imagesPathWrite + imCoreName + str (i) + '_' + str(j) + '_' + layersNames[j] + '.jpg', \
+                cv2.IMREAD_GRAYSCALE)
             plt.subplot(2,6,j+2)
             plt.imshow(prediction[0,:,:,nOrder[j]], cmap='gray')
             #plt.title('Level: ', str(j))
