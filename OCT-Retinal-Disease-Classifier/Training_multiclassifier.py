@@ -1,4 +1,3 @@
-import tensorflow as tf
 from keras.preprocessing.image import ImageDataGenerator
 from keras.applications import VGG16
 from keras.layers import Flatten, Dense
