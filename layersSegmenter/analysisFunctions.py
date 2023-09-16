@@ -3,7 +3,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import cv2 as cv
 
-def show_image_list(list_images, list_titles=None, list_cmaps=None, grid=True, num_cols=2, figsize=(20, 10), title_fontsize=30):
+def show_image_list(list_images, list_titles=None, list_cmaps=None, grid=True, num_cols=2, figsize=(20, 10), \
+    title_fontsize=30):
     '''
     Shows a grid of images, where each image is a Numpy array. The images can be either
     RGB or grayscale.
