@@ -1,6 +1,7 @@
 #Train eye diseases recognition system
 
 import os
+import time
 import pandas as pd
 import torch
 from torch import nn
@@ -60,7 +61,6 @@ for X, y in train_dataloader:
     print(f"Shape of y: {y.shape} {y.dtype}")
     break
 
-import time
 seconds = time.time()
 print("Time in seconds since the epoch:", seconds)
 

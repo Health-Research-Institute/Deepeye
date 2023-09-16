@@ -1,5 +1,4 @@
 import cv2
-import numpy as np
 
 # read image
 #img = cv2.imread("OCT-Retinal-Layer-Segmenter/bt.JPG")
