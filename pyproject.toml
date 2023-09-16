@@ -1,5 +1,5 @@
 [project]
-name = "OCT-Retinal-Disease-Classifier"
+name = "deepeye"
 dynamic = ["version"]
 authors = [
     {name = "DeepEye project at Health Research Institute"},
@@ -49,13 +49,8 @@ repository = "https://github.com/Health-Research-Institute/Deepeye"
 requires = ["setuptools>=61.2", "setuptools_scm[toml]>=7"]
 build-backend = "setuptools.build_meta"
 
-[tool.setuptools]
-packages = { find = ["OCT-Retinal-Disease-Classifier"] }
-zip-safe = false
-include-package-data = true
-
 [tool.setuptools_scm]
-write_to = "OCT-Retinal-Disease-Classifier/version.py"
+write_to = "_version.py"
 
 [tool.bandit]
 exclude_dirs = ["tests"]
