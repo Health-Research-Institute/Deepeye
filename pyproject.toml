@@ -10,10 +10,18 @@ license = {file = "LICENSE"}
 
 requires-python = ">=3.11"
 dependencies = [
-    "openpyxl",
-    "pandas",
-    "uvicorn",
-    "xlsxwriter"
+    "numpy",
+    "pillow",
+    "opencv-python",
+    "scikit-learn",
+    "matplotlib",
+    "tensorflow",
+    "tensorflow-metal",
+    "torch",
+    "torchaudio",
+    "torchvision",
+    "python-dotenv",
+    "pandas"
 ]
 
 [project.optional-dependencies]
