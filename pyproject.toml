@@ -51,6 +51,7 @@ build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
 packages = ["OCT-Retinal-Disease-Classifier"]
+version = "1.0.0"
 zip-safe = false
 include-package-data = true
 
