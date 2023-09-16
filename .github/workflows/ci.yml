@@ -31,7 +31,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install -r requirements/dev.txt
         shell: bash
       - name: Lint with ruff
         run: ruff .
@@ -58,7 +58,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip3 install -r requirements.txt
+        pip3 install -r requirements/dev.txt
       shell: bash -l {0}
     - name: pip install package
       run: pip install .
@@ -84,6 +84,30 @@ jobs:
 #        name: codecov-umbrella
 #        verbose: true
 
+  docs:
+    name: Build docs with Python ${{ matrix.python-version }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [ 3.11 ]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          pip3 install -r requirements/docs.txt
+        shell: bash
+      - name: Build sphinx docs.
+        run: |
+          cd docs
+          make clean
+          make html
+        shell: bash
+  
   build:
     name: Build and Publish.
     needs: test
