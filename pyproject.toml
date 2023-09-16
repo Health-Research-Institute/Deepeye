@@ -1,0 +1,93 @@
+[project]
+name = "deepeye"
+dynamic = ["version"]
+authors = [
+    {name = "DeepEye project at Health Research Institute"},
+]
+description = "DeepEye project"
+readme = "README.md"
+license = {file = "LICENSE"}
+
+requires-python = ">=3.11"
+dependencies = [
+    "numpy",
+    "pillow",
+    "opencv-python",
+    "scikit-learn",
+    "matplotlib",
+    "tensorflow",
+    "torch",
+    "torchaudio",
+    "torchvision",
+    "python-dotenv",
+    "pandas"
+]
+
+[project.optional-dependencies]
+dev = [
+    "bandit>=1.7",
+    "build",
+    "pytest",
+    "pytest-cov",
+    "ruff",
+    "tox"
+]
+docs = [
+    "sphinx",
+    "sphinx_rtd_theme",
+    "sphinx-automodapi",
+    "sphinx-issues",
+    "nbsphinx"
+]
+
+[project.urls]
+homepage = "https://github.com/Health-Research-Institute/Deepeye"
+documentation = "https://github.com/Health-Research-Institute/Deepeye"
+repository = "https://github.com/Health-Research-Institute/Deepeye"
+
+[build-system]
+requires = ["setuptools>=61.2", "setuptools_scm[toml]>=7"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = { "OCT-Retinal-Disease-Classifier", "OCT-Retinal-Finding-Classifier", "OCT-Retinal-Layer-Segmenter", "densenetClassifier" }
+zip-safe = false
+include-package-data = true
+
+[tool.setuptools_scm]
+write_to = "_version.py"
+
+[tool.bandit]
+exclude_dirs = ["tests"]
+
+[tool.ruff]
+line-length = 120
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".hg",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "docs",
+    "migrations",
+    "node_modules",
+    "venv",
+]
+
+ignore = [
+]
+
+target-version = "py311"
