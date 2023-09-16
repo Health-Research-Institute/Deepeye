@@ -1,12 +1,8 @@
 # Retina Analysis
 import cv2 as cv
-import numpy as np
 #import matplotlib.pyplot as plt
-from PIL import Image
 from analysisFunctions import show_image_list
 from analysisFunctions import insert_patch_subpixel2
-from imageCleaning import eraseObject
-import os
 
 #define data directory 
 dataDir =  "../Images/CT_RETINA/NORMAL_206"

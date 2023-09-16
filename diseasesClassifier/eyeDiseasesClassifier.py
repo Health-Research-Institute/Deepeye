@@ -1,20 +1,16 @@
 #Train eye diseases recognition system
 
 import os
-import cv2
-import pandas as pd
 import pandas as pd
 import torch
-aa = torch.cuda.is_available()
-print(aa)
-
 from torch import nn
 from torch.utils.data import DataLoader
-from torchvision import datasets
 from torchvision import transforms
-from torchvision.transforms import ToTensor
 from torchvision.transforms import functional
 from torchvision.io import read_image
+
+aa = torch.cuda.is_available()
+print(aa)
 
 
 #Create dataset from STARE images
