@@ -1,5 +1,5 @@
 [project]
-name = "deepeye"
+name = "OCT-Retinal-Disease-Classifier"
 dynamic = ["version"]
 authors = [
     {name = "DeepEye project at Health Research Institute"},
@@ -56,7 +56,7 @@ zip-safe = false
 include-package-data = true
 
 [tool.setuptools_scm]
-write_to = "_version.py"
+write_to = "OCT-Retinal-Disease-Classifier/version.py"
 
 [tool.bandit]
 exclude_dirs = ["tests"]
