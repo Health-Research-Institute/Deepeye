@@ -1,4 +1,2 @@
-openpyxl==3.1.2
-pandas==2.0.3
-uvicorn[standard]==0.23.2
-xlsxwriter==3.1.2
+pandas==2.1.0
+tensorflow=2.13.0
