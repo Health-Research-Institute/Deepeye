@@ -5,7 +5,7 @@ from torch.utils.data import random_split
 
 classNames = ['AMRD','CSR','DR','MH','NORMAL']
 nClasses = len(classNames)
-nTrain = 15
+nTrain = 10
 
 for testClass in range(0,nClasses):
     imagesPathRead = '../Images/CT_RETINA/' + classNames[testClass] + '/Test'
