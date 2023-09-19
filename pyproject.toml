@@ -10,10 +10,17 @@ license = {file = "LICENSE"}
 
 requires-python = ">=3.11"
 dependencies = [
-    "openpyxl",
-    "pandas",
-    "uvicorn",
-    "xlsxwriter"
+    "numpy",
+    "pillow",
+    "opencv-python",
+    "scikit-learn",
+    "matplotlib",
+    "tensorflow",
+    "torch",
+    "torchaudio",
+    "torchvision",
+    "python-dotenv",
+    "pandas"
 ]
 
 [project.optional-dependencies]
@@ -34,21 +41,21 @@ docs = [
 ]
 
 [project.urls]
-homepage = ""
-documentation = ""
-repository = ""
+homepage = "https://github.com/Health-Research-Institute/Deepeye"
+documentation = "https://github.com/Health-Research-Institute/Deepeye"
+repository = "https://github.com/Health-Research-Institute/Deepeye"
 
 [build-system]
 requires = ["setuptools>=61.2", "setuptools_scm[toml]>=7"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
-packages = ["deepeye"]
+packages = [ "" ]
 zip-safe = false
 include-package-data = true
 
 [tool.setuptools_scm]
-write_to = "deepeye/_version.py"
+write_to = "_version.py"
 
 [tool.bandit]
 exclude_dirs = ["tests"]

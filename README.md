@@ -42,6 +42,9 @@ At command prompt (for example, in VS Code environment):
 					 or: conda install pytorch torchvision torchaudio -c pytorch-nightly
 		Install dotenv: pip install python-dotenv --upgrade
 
+	For diseaseClassifier:
+		Install Pandas package - run: pip install pandas --upgrade
+
 	Choose appropriate interpreter:
 		CTRL (CMD) + SHIFT + P
 		Choose "Python: Select Interpreter"
