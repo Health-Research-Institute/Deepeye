@@ -3,6 +3,10 @@ import numpy as np
 from keras.preprocessing import image
 from keras.models import load_model
 from sklearn.metrics import classification_report, confusion_matrix
+from keras.utils import image_utils
+
+
+imageCoreTest = 'Images/CT_RETINA/CNNTest'
 
 deepeye_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")) # Folder containing Deepeye repo
 
@@ -11,11 +15,12 @@ model_path = os.path.join(deepeye_path, 'Models/cnnModels/best_tl_multi_model.h5
 tl_model = load_model(model_path)
 
 # Define the path to the test images directory
-test_images_dir = os.path.join(deepeye_path, 'Images/cnnImages/MultiClassifier/Testing')
+test_images_dir = os.path.join(deepeye_path, imageCoreTest)
 
 # Get the list of class labels (subdirectories)
-class_labels = sorted(os.listdir(test_images_dir))
-class_labels.pop(0)
+class_labels = ['AMD','CSR','DR','MH','NORMAL'] 
+#classc = sorted(os.listdir(test_images_dir))
+#class_labels.pop(0)
 
 # Initialize variables for accuracy calculation
 total_images = 0
@@ -32,12 +37,12 @@ predicted_labels = []
 
 # Loop through each class label and its images
 for label in class_labels:
-    label_dir = os.path.join(os.path.join(deepeye_path, 'Images/cnnImages/MultiClassifier/Testing'), label)
+    label_dir = os.path.join(os.path.join(deepeye_path, imageCoreTest), label)
     image_files = os.listdir(label_dir)
     for image_file in image_files:
         image_path = os.path.join(label_dir, image_file)
-        img = image.load_img(image_path, target_size=(256, 256))  # Resize to match model input size
-        img_array = image.img_to_array(img)
+        img = image_utils.load_img(image_path, target_size=(256, 256))  # Resize to match model input size
+        img_array = image_utils.img_to_array(img)
         img_array = np.expand_dims(img_array, axis=0)
         img_array /= 255.  # Normalize
         

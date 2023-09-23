@@ -6,6 +6,15 @@ from keras.callbacks import ModelCheckpoint
 import matplotlib.pyplot as plt
 import sys
 import os
+import pandas as pd
+import glob
+import numpy as np
+
+
+classNames = ['AMD','CSR','DR','MH','NORMAL']
+imageCoreTrain = 'Images/CT_RETINA/CNNTrain'
+imageCoreTest = 'Images/CT_RETINA/CNNTest'
+trainNamesFile = '../Models/indices/train_indices.csv'
 
 # Part 1 - Data Preprocessing
 deepeye_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")) # Folder containing Deepeye repo
@@ -18,23 +27,50 @@ train_datagen = ImageDataGenerator(
     horizontal_flip=True
 )
 training_set = train_datagen.flow_from_directory(
-    os.path.join(deepeye_path, 'Images/cnnImages/MultiClassifier/Training/eyetype'),
+    os.path.join(deepeye_path, imageCoreTrain),
     target_size=(256, 256),
     batch_size=32
 )
 
 # Get the list of training image filenames
+
+
+# LOAD FILE INDECES FOR TRAIN or TEST )
+#dfTT = pd.read_csv(trainNamesFile, low_memory=False) #path to csv file with train indices 
+
+#for tClass in range(0,len(classNames)):
+#    a1 = dfTT.Names[tClass]
+#    nIm = dfTT['# Images'][tClass]
+#    b1 = a1.split('[')
+#    b2 = b1[1]
+#    c1 = b2.split(']')
+#    c2 = c1[0]
+#    ttInd =c2.split(',')
+
+#    imagesPathRead = '../' + imageCoreFolder + classNames[tClass] + '/All'
+
+#    training_image_filenames = np.empty([0,1])
+#    for directoryPath in glob.glob(imagesPathRead):
+#        for jj in range(0,nIm):
+#            if jj==0:
+#                imgPath = directoryPath + '/' + ttInd[jj][1:-1]
+#            else: 
+#                imgPath = directoryPath + '/' + ttInd[jj][2:-1] 
+#
+#            training_image_filenames = np.vstack([training_image_filenames,imgPath])  
+
 training_image_filenames = training_set.filenames
 
 # Save the training image filenames to a file
-with open(os.path.join(deepeye_path, 'Logs/cnnLogs/multi_training_image_filenames.txt'), 'w') as file:
-    for filename in training_image_filenames:
-        file.write(filename + '\n')
+#with open(os.path.join(deepeye_path, 'Logs/cnnLogs/multi_training_image_filenames.txt'), 'w') as file:
+#    for filename in training_image_filenames:
+#        file.write(filename + '\n')
 
 # Preprocessing the Test set
 test_datagen = ImageDataGenerator(rescale=1./255)
 test_set = test_datagen.flow_from_directory(
-    os.path.join(deepeye_path, 'Images/cnnImages/MultiClassifier/Testing'),
+    os.path.join(deepeye_path, imageCoreTest),
+    #os.path.join(deepeye_path, 'Images/cnnImages/MultiClassifier/Testing'),
     target_size=(256, 256),
     batch_size=32
 )
