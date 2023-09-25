@@ -50,7 +50,11 @@ requires = ["setuptools>=61.2", "setuptools_scm[toml]>=7"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
-packages = [ "CNN_Classifier", "LayersSegmenter" ]
+packages = [
+    { name = "LayersSegmenter", exclude = ["for_readme", "testSet", "trainingSet"] },
+    { name = "densenetClassifier" },
+    { name = "CNN_Classifier" }
+]
 zip-safe = false
 include-package-data = true
 
