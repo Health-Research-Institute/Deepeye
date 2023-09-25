@@ -1,4 +1,4 @@
-__project__ = "DenseNetClassifier"
+__project__ = "densenetClassifier"
 
 try:
     from .version import __version__
