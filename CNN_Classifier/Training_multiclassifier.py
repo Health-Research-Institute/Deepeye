@@ -10,8 +10,6 @@ import pandas as pd
 import glob
 import numpy as np
 
-
-classNames = ['AMD','CSR','DR','MH','NORMAL']
 imageCoreTrain = 'Images/CT_RETINA/CNNTrain'
 imageCoreTest = 'Images/CT_RETINA/CNNTest'
 trainNamesFile = '../Models/indices/train_indices.csv'
