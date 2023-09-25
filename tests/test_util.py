@@ -1,5 +1,5 @@
-from DenseNetClassifier.util import find_package_location, find_repo_location
-from DenseNetClassifier import __project__, __version__
+from densenetClassifier.util import find_package_location, find_repo_location
+from densenetClassifier import __project__, __version__
 
 
 def test_version():
