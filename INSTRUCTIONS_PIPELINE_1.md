@@ -15,7 +15,7 @@ III. Split to Test and Train folders and create logs
 3.1 Create folders TempCNNTrain, TempCNNTest, TempDenseTrain, TempDenseTest inside CT_RETINA
 3.2 Ensure that you have directory named Logs on the same level as Images
 Ensure that inside Logs there is a directory TrainTestNames  
-3.3 In simple9LCreator.py set-up nTrain to how many images will be used from each class
+3.3 In fileSorterCNN_Dense.py set-up nTrain to how many images will be used from each class
 Note that 3*nTrain will be used for NORMAL
 Suggested values are 25, 35, 45 and 55
 

@@ -8,7 +8,7 @@ from keras.utils import image_utils
 class_labels = ['AMD','CSR','DR','MH','NORMAL'] 
 imageCoreTest = 'Images/CT_RETINA/TempCNNTest'
 modelDir = 'Models/cnnModels'
-modelName = 'cnn25IperClass_2023-09-25.h5'
+modelName = 'cnn58IperClass_2023-09-27.h5'
 deepeye_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")) # Folder containing Deepeye repo
 model_path = os.path.join(deepeye_path, modelDir + '/'+ modelName)
 

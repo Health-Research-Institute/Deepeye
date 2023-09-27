@@ -19,7 +19,7 @@ imageCoreTrain = 'Images/CT_RETINA/TempCNNTrain'
 imageCoreTest = 'Images/CT_RETINA/SmallCNNTest'
 #trainNamesFile = '../Models/indices/train_indices.csv'
 modelSaveDir = 'Models/cnnModels/'
-nEpochs = 30
+nEpochs = 40
 current_date = datetime.date.today()
 
 # Part 1 - Data Preprocessing

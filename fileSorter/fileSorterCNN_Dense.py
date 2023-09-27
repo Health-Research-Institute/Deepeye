@@ -7,7 +7,7 @@ import datetime
 
 classNames = ['AMD','CSR','DR','MH','NORMAL']
 nClasses = len(classNames)
-nTrain = 25
+pTrain = 80 #Percentage of images going to training set 
 imageCoreDir = '../Images/CT_RETINA'
 logsDir = '../Logs/TrainTestNames/'
 
@@ -16,8 +16,8 @@ layersNames = ['BCG', 'NFL', 'GCL', 'INL', 'OPL' , 'ONL', 'ELZ', 'RPE', 'CHO'] #
 
 current_date = datetime.date.today()
 
-trainIndName = logsDir + 'train_Names' + str(nTrain) + '_' + str(current_date) + '.csv'
-testIndName = logsDir + 'test_Names' + str(nTrain) + '_' + str(current_date) + '.csv'
+trainIndName = logsDir + 'train_Names' + str(pTrain) + '%_' + str(current_date) + '.csv'
+testIndName = logsDir + 'test_Names' + str(pTrain) + '%_' + str(current_date) + '.csv'
 
 dfTrain = pd.DataFrame(columns=['# Images', 'Names'])
 dfTest =  pd.DataFrame(columns=['# Images', 'Names'])
@@ -50,11 +50,13 @@ for nClass in classNames:
     file_names = os.listdir(imagesPathRead)
     nFiles = len(file_names)
     indArray = np.arange(0, nFiles)
+
+    nTest = round(nFiles*(100-pTrain)/100)
     
-    if (nClass == 'NORMAL'): #normal class to have more images
-        train_set, test_set = random_split(indArray, [3*nTrain, nFiles-3*nTrain])
-    else:
-        train_set, test_set = random_split(indArray, [nTrain, nFiles-nTrain])
+    #if (nClass == 'NORMAL'): #normal class to have more images
+    #    train_set, test_set = random_split(indArray, [3*nTrain, nFiles-3*nTrain])
+    #else:
+    train_set, test_set = random_split(indArray, [nFiles - nTest, nTest])
    
     trainInd = np.sort(train_set).tolist()
     testInd = np.sort(test_set).tolist()
