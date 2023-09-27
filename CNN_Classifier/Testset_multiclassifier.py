@@ -5,31 +5,37 @@ from keras.models import load_model
 from sklearn.metrics import classification_report, confusion_matrix
 from keras.utils import image_utils
 
-
-imageCoreTest = 'Images/CT_RETINA/CNNTest'
-
+class_labels = ['AMD','CSR','DR','MH','NORMAL'] 
+imageCoreTest = 'Images/CT_RETINA/TempCNNTest'
+modelDir = 'Models/cnnModels'
+modelName = 'cnn25IperClass_2023-09-25.h5'
 deepeye_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")) # Folder containing Deepeye repo
+model_path = os.path.join(deepeye_path, modelDir + '/'+ modelName)
+
+thres_factor = 50
+
+#forming log file
+logFname = modelName[0:-3] + ".csv"
+logDir = 'Logs/cnnLogs'
+logPathFile = os.path.join(deepeye_path, logDir + '/'+ logFname)
 
 # Load the trained transfer learning model
-model_path = os.path.join(deepeye_path, 'Models/cnnModels/best_tl_multi_model.h5')
 tl_model = load_model(model_path)
-
 # Define the path to the test images directory
 test_images_dir = os.path.join(deepeye_path, imageCoreTest)
-
-# Get the list of class labels (subdirectories)
-class_labels = ['AMD','CSR','DR','MH','NORMAL'] 
-#classc = sorted(os.listdir(test_images_dir))
-#class_labels.pop(0)
 
 # Initialize variables for accuracy calculation
 total_images = 0
 correct_predictions = 0
+unknown_diagnosys = 0
+SickAsNormal = 0
+NormalAsSick = 0
 
 # Initialize dictionaries to keep track of counts and correct/incorrect predictions
 category_counts = {label: 0 for label in class_labels}
 category_correct = {label: 0 for label in class_labels}
 category_incorrect = {label: 0 for label in class_labels}
+category_unknown = {label: 0 for label in class_labels}
 
 # Lists to store true and predicted labels
 true_labels = []
@@ -63,11 +69,24 @@ for label in class_labels:
         category_counts[actual_label] += 1
         
         # Check if prediction is correct
-        if predicted_label == actual_label:
-            correct_predictions += 1
-            category_correct[actual_label] += 1
-        else:
-            category_incorrect[actual_label] += 1
+        testValues = np.round(100*predictions)
+        if np.max(testValues) < thres_factor:
+            unknown_diagnosys += 1
+            category_unknown[actual_label] += 1
+            print('Unknown Diagnosys: ', testValues, 'Label: ', actual_label)
+        else: 
+            if predicted_label == actual_label:
+                correct_predictions += 1
+                category_correct[actual_label] += 1
+                #print('Correct Predictions: ', np.round(100*predictions), 'Label: ', actual_label)
+            else:
+                category_incorrect[actual_label] += 1
+                print('Incorrect Predictions: ', np.round(100*predictions), 'Labels cor: ', actual_label, 'pred: ', predicted_label)
+                if predicted_label == 'NORMAL':
+                    SickAsNormal +=1
+                elif actual_label == 'NORMAL':
+                    NormalAsSick +=1
+
         
         total_images += 1
         
@@ -76,8 +95,26 @@ for label in class_labels:
         predicted_labels.append(predicted_label)
 
 # Calculate accuracy
-accuracy = correct_predictions / total_images * 100
-print("Test set accuracy: {:.2f}%".format(accuracy))
+accuracy = correct_predictions / total_images  * 100
+ud = unknown_diagnosys/total_images  * 100
+
+logFile = open(logPathFile, "a")
+logFile.write("Threshold factor: " + str(thres_factor))
+titleString = "\nCorrect with Confidence: {:.2f}%".format(accuracy)
+logFile.write(titleString + "\n")
+print(titleString)
+
+tS2 ="Unknown Diagnosys: {:.2f}%".format(ud)
+print(tS2)
+logFile.write(tS2 + "\n")
+
+tS3 ="Incorrect Diagnosys: {:.2f}%".format(100 - ud - accuracy)
+print(tS3)
+logFile.write(tS3 + "\n")
+
+tS4 = "Normal as Sick: " + str(NormalAsSick) + "; Sick as Normal: " + str(SickAsNormal)
+print(tS4)
+logFile.write(tS4 + "\n")
 
 # Print category-wise statistics
 print("\nCategory-wise Statistics:")
@@ -85,20 +122,41 @@ for label in class_labels:
     total = category_counts[label]
     correct = category_correct[label]
     incorrect = category_incorrect[label]
-    accuracy = correct / total * 100 if total > 0 else 0
+    ud = category_unknown[label]
+    
+    failure_rate = incorrect / total * 100 if total > 0 else 0
     
     print("Category:", label)
     print("Total:", total)
-    print("Correct:", correct)
+    print("Confident Correct:", correct)
+    print("Unknown", ud)
     print("Incorrect:", incorrect)
-    print("Accuracy: {:.2f}%".format(accuracy))
+    print("Accuracy: {:.2f}%".format(failure_rate))
     print("----------------------")
+
+    logFile.write("\nCategory: " + str(label))
+    logFile.write("\nTotal: " + str(total))
+    logFile.write("\nConfident Correct: " + str(correct))
+    logFile.write("\nUnknown:" +str(ud))
+    logFile.write("\nIncorrect:" +str(incorrect))
+
+    logFile.write("\nFailure Rate: {:.2f}%".format(failure_rate))
+    logFile.write("\n----------------------")
 
 # Print classification report
 print("\nClassification Report:")
-print(classification_report(true_labels, predicted_labels, target_names=class_labels))
+class_report = classification_report(true_labels, predicted_labels, target_names=class_labels)
+print(class_report)
+
+logFile.write("\nClassification Report:")
+logFile.write(class_report)
 
 # Generate confusion matrix
 conf_matrix = confusion_matrix(true_labels, predicted_labels, labels=class_labels)
 print("\nConfusion Matrix:")
 print(conf_matrix)
+
+logFile.write("\nConfusion Matrix:\n")
+logFile.write(str(conf_matrix))
+
+logFile.close()

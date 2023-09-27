@@ -32,3 +32,20 @@ def analyseTest(tensorIn):
         fitN[j] = sum(np.equal(mpi, j))
 
     return fitN
+
+def analyseTest2(tensorIn):
+    prob = tensorIn.cpu().numpy()
+    prob = np.round(100*prob)/100
+
+    prob5 = sum(prob)
+    indFit = np.argmax(prob5)
+
+    return indFit
+
+def analyseTest3(tensorIn):
+    prob = tensorIn.cpu().numpy()
+    prob = np.round(100*prob)/100
+
+    matA = np.argmax(sum(np.floor(5*prob)/5))
+
+    return matA

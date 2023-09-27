@@ -17,19 +17,19 @@ class DataPreprocessing(Dataset):
     trainMode = eval(os.getenv("trainMode"))
     if trainMode: 
         classPaths = {
-        'AMRD': ['../../Images/CT_RETINA/AMRD/Train9L', 25],
-        'CSR':  ['../../Images/CT_RETINA/CSR/Train9L', 25],
-        'DR':   [ '../../Images/CT_RETINA/DR/Train9L', 25],
-        'MH':   ['../../Images/CT_RETINA/MH/Train9L', 25],
-        'NORMAL': ['../../Images/CT_RETINA/NORMAL/Train9L', 75]
+        'AMD': ['../../Images/CT_RETINA/TempDenseTrain9L/AMD', 25],
+        'CSR':  ['../../Images/CT_RETINA/TempDenseTrain9L/CSR/', 25],
+        'DR':   [ '../../Images/CT_RETINA/TempDenseTrain9L/DR/', 25],
+        'MH':   ['../../Images/CT_RETINA/TempDenseTrain9L/MH/', 25],
+        'NORMAL': ['../../Images/CT_RETINA/TempDenseTrain9L/NORMAL/', 75]
         }
     else: 
         classPaths = {
-        'AMRD': ['../../Images/CT_RETINA/AMRD/Test9L', 28],
-        'CSR':  ['../../Images/CT_RETINA/CSR/Test9L', 67],
-        'DR':   [ '../../Images/CT_RETINA/DR/Test9L', 75],
-        'MH':   ['../../Images/CT_RETINA/MH/Test9L', 67],
-        'NORMAL': ['../../Images/CT_RETINA/NORMAL/Test9L', 109]
+        'AMD': ['../../Images/CT_RETINA/TempDenseTest9L/AMD', 72-25],
+        'CSR':  ['../../Images/CT_RETINA/TempDenseTest9L/CSR/', 63-25],
+        'DR':   [ '../../Images/CT_RETINA/TempDenseTest9L/DR/', 108-25],
+        'MH':   ['../../Images/CT_RETINA/TempDenseTest9L/MH/', 82-25],
+        'NORMAL': ['../../Images/CT_RETINA/TempDenseTest9L/NORMAL/', 187-75]
         }
             
     

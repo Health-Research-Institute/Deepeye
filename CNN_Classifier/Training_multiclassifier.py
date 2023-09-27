@@ -7,12 +7,20 @@ import matplotlib.pyplot as plt
 import sys
 import os
 import pandas as pd
-import glob
 import numpy as np
+import datetime
+from torch.utils.data import random_split
+import tensorflow
 
-imageCoreTrain = 'Images/CT_RETINA/CNNTrain'
-imageCoreTest = 'Images/CT_RETINA/CNNTest'
-trainNamesFile = '../Models/indices/train_indices.csv'
+print(tensorflow.config.list_physical_devices('GPU'))
+
+imageCoreTrain = 'Images/CT_RETINA/TempCNNTrain'
+#imageCoreTest = 'Images/CT_RETINA/TempCNNTest'
+imageCoreTest = 'Images/CT_RETINA/SmallCNNTest'
+#trainNamesFile = '../Models/indices/train_indices.csv'
+modelSaveDir = 'Models/cnnModels/'
+nEpochs = 30
+current_date = datetime.date.today()
 
 # Part 1 - Data Preprocessing
 deepeye_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")) # Folder containing Deepeye repo
@@ -30,39 +38,16 @@ training_set = train_datagen.flow_from_directory(
     batch_size=32
 )
 
+#form write file:
+imPerClass= int(len(training_set.filenames)/7)
+coreFN = 'cnn' + str(imPerClass) + 'IperClass_' + str(current_date)
+modelFile = coreFN + '.h5'
+figuresFile = coreFN + '.png'
+logFile = coreFN + '.txt'
+
 # Get the list of training image filenames
 
-
-# LOAD FILE INDECES FOR TRAIN or TEST )
-#dfTT = pd.read_csv(trainNamesFile, low_memory=False) #path to csv file with train indices 
-
-#for tClass in range(0,len(classNames)):
-#    a1 = dfTT.Names[tClass]
-#    nIm = dfTT['# Images'][tClass]
-#    b1 = a1.split('[')
-#    b2 = b1[1]
-#    c1 = b2.split(']')
-#    c2 = c1[0]
-#    ttInd =c2.split(',')
-
-#    imagesPathRead = '../' + imageCoreFolder + classNames[tClass] + '/All'
-
-#    training_image_filenames = np.empty([0,1])
-#    for directoryPath in glob.glob(imagesPathRead):
-#        for jj in range(0,nIm):
-#            if jj==0:
-#                imgPath = directoryPath + '/' + ttInd[jj][1:-1]
-#            else: 
-#                imgPath = directoryPath + '/' + ttInd[jj][2:-1] 
-#
-#            training_image_filenames = np.vstack([training_image_filenames,imgPath])  
-
 training_image_filenames = training_set.filenames
-
-# Save the training image filenames to a file
-#with open(os.path.join(deepeye_path, 'Logs/cnnLogs/multi_training_image_filenames.txt'), 'w') as file:
-#    for filename in training_image_filenames:
-#        file.write(filename + '\n')
 
 # Preprocessing the Test set
 test_datagen = ImageDataGenerator(rescale=1./255)
@@ -97,23 +82,22 @@ tl_model.summary()
 
 # Part 3 - Training the Transfer Learning Model
 # Define the filepath where you want to save the best model
-filepath = os.path.join(deepeye_path, 'Models/cnnModels/best_tl_multi_model.h5')
+
+
+filepath = os.path.join(deepeye_path, modelSaveDir + modelFile)
 
 # Define the ModelCheckpoint callback
 checkpoint = ModelCheckpoint(filepath, monitor='val_accuracy', mode='max', save_best_only=True, verbose=1)
 
 # Training the transfer learning model
-history = tl_model.fit(x=training_set, validation_data=test_set, epochs=20, callbacks=[checkpoint])
-
-
-
+history = tl_model.fit(x=training_set, validation_data=test_set, epochs=nEpochs, callbacks=[checkpoint])
 
 plt.plot(history.history['accuracy'], label='Training Accuracy')
 plt.title('Training Accuracy')
 plt.xlabel('Epoch')
 plt.ylabel('Accuracy')
 plt.legend()
-plt.savefig(os.path.join(deepeye_path, 'Figures/cnnFigures/multi_training_accuracy_plot.png'))
+plt.savefig(os.path.join(deepeye_path, 'Figures/cnnFigures/' + figuresFile ))
 plt.show()
 
 # Save the validation accuracy plot
@@ -122,11 +106,11 @@ plt.title('Validation Accuracy')
 plt.xlabel('Epoch')
 plt.ylabel('Accuracy')
 plt.legend()
-plt.savefig(os.path.join(deepeye_path, 'Figures/cnnFigures/multi_validation_accuracy_plot.png'))
+plt.savefig(os.path.join(deepeye_path, 'Figures/cnnFigures/val_' + figuresFile ))
 plt.show()
 
 # Save the output logs
-sys.stdout = open(os.path.join(deepeye_path, 'Logs/cnnLogs/multi_output_logs.txt'), 'w')
+sys.stdout = open(os.path.join(deepeye_path, 'Logs/cnnLogs/' + logFile), 'w')
 print(history.history)
 sys.stdout.close()
 
