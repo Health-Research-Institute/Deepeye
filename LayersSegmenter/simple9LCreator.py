@@ -4,6 +4,7 @@ import os
 import glob
 import cv2
 import numpy as np
+from layers2one import l2one
 
 # General Params to use with player
 sizeX = 640
@@ -24,10 +25,15 @@ model.load_weights(modelDirName)
 for nClass in classNames:
     imagesPathRead = '../Images/CT_RETINA/' + nClass + '/All/'
     imagesPathWrite ='../Images/CT_RETINA/' + nClass + '/All9L/'
+    imagesPathWriteS9 = '../Images/CT_RETINA/' + nClass + '/S9L/'
     
     if not os.path.isdir(imagesPathWrite):
         os.makedirs(imagesPathWrite)
     imagesPathWrite = imagesPathWrite + '/'
+
+    if not os.path.isdir(imagesPathWriteS9):
+        os.makedirs(imagesPathWriteS9)
+    imagesPathWriteS9 = imagesPathWriteS9 + '/'
     
     imageIds = next(os.walk(imagesPathRead))[2]
 
@@ -53,10 +59,16 @@ for nClass in classNames:
         subStr = imageIds[i]
         clNN = subStr[0:-5] #dropping .jpeg from the file name
 
+        imageSt = []
         #loop through nine layers 
         for j in range(0,nLayers):        
             layer01 = prediction[0,:,:,nOrder[j]] *255
             layerTest = layer01.round() 
             cv2.imwrite(imagesPathWrite + clNN + '_' + str(j) + '_' + layersNames[j] + '.jpg', layerTest)
-    
+            #create Superposed 
+            imageSt.append(layerTest)
+
+        newImage = l2one(imageSt)
+        cv2.imwrite(imagesPathWriteS9 + clNN + '_S9.jpg', newImage)    
+
     print('Class',  nClass, ' part' , ' is done')

@@ -26,6 +26,7 @@ dfTest =  pd.DataFrame(columns=['# Images', 'Names'])
 for nClass in classNames:
     imagesPathRead = imageCoreDir + '/' + nClass + '/All'
     imagesPathRead9L = imageCoreDir + '/' + nClass + '/All9L'
+    imagesPathReadS9 = imageCoreDir + '/' + nClass + '/S9L'
     
     imagesCNNTrain = imageCoreDir + '/TempCNNTrain/' + nClass
     if not os.path.isdir(imagesCNNTrain):
@@ -36,6 +37,16 @@ for nClass in classNames:
     if not os.path.isdir(imagesCNNTest):
         os.makedirs(imagesCNNTest)
     imagesCNNTest = imagesCNNTest + '/'
+
+    imagesCNNS9Train = imageCoreDir + '/TempCNNS9Train/' + nClass
+    if not os.path.isdir(imagesCNNS9Train):
+        os.makedirs(imagesCNNS9Train)
+    imagesCNNS9Train = imagesCNNS9Train + '/'
+
+    imagesCNNS9Test = imageCoreDir + '/TempCNNS9Test/' + nClass
+    if not os.path.isdir(imagesCNNS9Test):
+        os.makedirs(imagesCNNS9Test)
+    imagesCNNS9Test = imagesCNNS9Test + '/'
 
     imagesDenseTrain = imageCoreDir + '/TempDenseTrain9L/' + nClass
     if not os.path.isdir(imagesDenseTrain):
@@ -48,6 +59,7 @@ for nClass in classNames:
     imagesDenseTest = imagesDenseTest + '/'
 
     file_names = os.listdir(imagesPathRead)
+    file_namesS9 = os.listdir(imagesPathReadS9)
     nFiles = len(file_names)
     indArray = np.arange(0, nFiles)
 
@@ -65,8 +77,11 @@ for nClass in classNames:
     namesTe = [file_names[i] for i in testInd]
    
     for i in range(0, len(trainInd)):
-        file_name = file_names[trainInd[i]] 
+        file_name = file_names[trainInd[i]]
+        file_nameS9 = file_namesS9[trainInd[i]]  
         shutil.copy(os.path.join(imagesPathRead, file_name), imagesCNNTrain)
+        shutil.copy(os.path.join(imagesPathReadS9, file_nameS9), imagesCNNS9Train)
+
         for j in range(0,nLayers):
             fCore = file_name[0:-5]
             file9L_name = fCore + '_' + str(j) + '_' + layersNames[j] + '.jpg'
@@ -74,11 +89,14 @@ for nClass in classNames:
 
     for i in range(0, len(testInd)):
         file_name = file_names[testInd[i]] 
+        file_nameS9 = file_namesS9[trainInd[i]]  
         shutil.copy(os.path.join(imagesPathRead, file_name), imagesCNNTest)
+        shutil.copy(os.path.join(imagesPathReadS9, file_nameS9), imagesCNNS9Test)
         for j in range(0,nLayers):
             fCore = file_name[0:-5]
             file9L_name = fCore + '_' + str(j) + '_' + layersNames[j] + '.jpg'
             shutil.copy(os.path.join(imagesPathRead9L, file9L_name), imagesDenseTest)
+            
 
     dfTrain = pd.concat([dfTrain, pd.DataFrame.from_records([{'# Images': len(namesTr), 'Names': namesTr}])], ignore_index=True)
     dfTest  = pd.concat([dfTest, pd.DataFrame.from_records([{'# Images': len(namesTe), 'Names': namesTe}])], ignore_index=True)
