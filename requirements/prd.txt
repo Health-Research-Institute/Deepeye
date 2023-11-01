@@ -7,6 +7,6 @@ tensorflow==2.14.0
 #tensorflow-metal==1.0.1
 torch==2.0.1
 torchaudio==2.0.2
-torchvision==0.15.2
+torchvision==0.16.0
 python-dotenv==1.0.0
 pandas==2.1.1
