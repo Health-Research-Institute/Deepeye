@@ -6,7 +6,7 @@ matplotlib==3.7.2
 tensorflow<=2.13.0
 #tensorflow-metal==1.0.1
 torch==2.1.0
-torchaudio==2.1.0
+torchaudio==2.1.2
 torchvision==0.16.0
 python-dotenv==1.0.0
 pandas==2.1.2
