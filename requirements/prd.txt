@@ -7,6 +7,6 @@ tensorflow<=2.15.0.post1
 #tensorflow-metal==1.0.1
 torch==2.2.2
 torchaudio==2.1.2
-torchvision==0.16.0
+torchvision==0.18.1
 python-dotenv==1.0.1
 pandas==2.1.2
