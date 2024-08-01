@@ -26,7 +26,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m venv deepeye
-          source venv/bin/activate
+          source deepeye/bin/activate
           python -m pip install --upgrade pip
           pip install bandit>=1.7 tox
         shell: bash
