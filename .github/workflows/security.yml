@@ -25,8 +25,10 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
         run: |
+          python -m venv deepeye
+          source venv/bin/activate
           python -m pip install --upgrade pip
-          pip3 install bandit>=1.7 tox
+          pip install bandit>=1.7 tox
         shell: bash
       - name: Run bandit (via tox)
         run: tox -e check-security
