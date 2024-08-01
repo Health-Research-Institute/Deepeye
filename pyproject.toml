@@ -17,7 +17,6 @@ dependencies = [
     "matplotlib",
     "tensorflow",
     "torch",
-    "torchaudio",
     "torchvision",
     "python-dotenv",
     "pandas"
