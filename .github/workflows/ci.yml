@@ -60,20 +60,6 @@ jobs:
       shell: bash -l {0}
     - name: pip install package
       run: pip install .
-    - name: Check disk space before cleanup
-      run: df -h
-    - name: Clean up disk space
-      run: |
-        sudo rm -rf /usr/local/Cellar/*
-        sudo rm -rf /Users/runner/Library/Developer/Xcode/DerivedData/*
-        sudo rm -rf /Users/runner/Library/Caches/*
-        sudo rm -rf /Users/runner/Library/Logs/*
-        sudo rm -rf /Users/runner/Library/Developer/CoreSimulator/Caches/*
-        sudo rm -rf /Users/runner/Library/Developer/CoreSimulator/Devices/*
-        sudo rm -rf /Users/runner/Library/Developer/Xcode/Archives/*
-        sudo rm -rf /private/var/folders/*
-    - name: Check disk space after cleanup
-      run: df -h
     - name: Test with tox (pytest)
       run: tox -e test
     - name: Archive coverage report
