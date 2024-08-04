@@ -28,7 +28,7 @@ jobs:
           python -m venv deepeye
           source deepeye/bin/activate
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install -r requirements/dev.txt
         shell: bash
       - name: Run bandit (via tox)
         run: tox -e check-security
