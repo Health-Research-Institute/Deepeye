@@ -35,11 +35,11 @@ At command prompt (for example, in VS Code environment):
 	For DenseNet_Model.ipynb:
 		Install Pytorch:
 			For Windows (see https://pytorch.org/get-started/locally/#windows-pip) 
-				Without GPU - run: pip3 install torch torchvision torchaudio
-				With GPU - run: pip3 install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu117 (or cu118 based on current version)
+				Without GPU - run: pip3 install torch torchvision
+				With GPU - run: pip3 install torch torchvision --extra-index-url https://download.pytorch.org/whl/cu117 (or cu118 based on current version)
 			For Mac with M1/M2:
-				Run: pip install --pre torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/nightly/cpu
-					 or: conda install pytorch torchvision torchaudio -c pytorch-nightly
+				Run: pip install --pre torch torchvision --extra-index-url https://download.pytorch.org/whl/nightly/cpu
+					 or: conda install pytorch torchvision -c pytorch-nightly
 		Install dotenv: pip install python-dotenv --upgrade
 
 	For diseaseClassifier:
