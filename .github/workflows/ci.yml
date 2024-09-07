@@ -101,9 +101,6 @@ jobs:
       - name: Build sphinx docs.
         run: tox -e build-docs
         shell: bash
-      - name: Cleanup workspace
-        run: |
-          sudo rm -rf /Users/runner/work/DeepEye/*
   
   build:
     name: Build and Publish.
