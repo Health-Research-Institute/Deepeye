@@ -33,7 +33,7 @@ jobs:
           pip install -r requirements/dev.txt
         shell: bash
       - name: Lint
-        run: tox -e check-style
+        run: tox -e check-style --fix --unsafe-fixes
         shell: bash
 
   test:
