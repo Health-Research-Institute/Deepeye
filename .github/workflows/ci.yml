@@ -69,9 +69,6 @@ jobs:
         path: coverage.html
         retention-days: 14
         if-no-files-found: error
-    - name: Cleanup workspace
-      run: |
-        sudo rm -rf /Users/runner/work/DeepEye/*
 #    - name: Upload coverage to Codecov
 #      uses: codecov/codecov-action@v3
 #      with:
