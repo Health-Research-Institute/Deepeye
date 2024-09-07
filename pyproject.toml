@@ -96,6 +96,7 @@ exclude = [
 ]
 
 ignore = [
+    "lint.ignore"
 ]
 
 target-version = "py311"
