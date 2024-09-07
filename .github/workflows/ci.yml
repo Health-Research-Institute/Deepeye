@@ -69,6 +69,10 @@ jobs:
         path: coverage.html
         retention-days: 14
         if-no-files-found: error
+    - name: Cleanup workspace
+      if: always()
+      run: |
+        sudo rm -rf /home/runner/work/DeepEye/*
 #    - name: Upload coverage to Codecov
 #      uses: codecov/codecov-action@v3
 #      with:
@@ -101,6 +105,10 @@ jobs:
       - name: Build sphinx docs.
         run: tox -e build-docs
         shell: bash
+      - name: Cleanup workspace
+        if: always()
+        run: |
+          sudo rm -rf /home/runner/work/DeepEye/*
   
   build:
     name: Build and Publish.
