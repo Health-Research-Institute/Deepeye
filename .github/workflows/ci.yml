@@ -71,7 +71,7 @@ jobs:
         if-no-files-found: error
     - name: Cleanup workspace
       run: |
-        sudo rm -rf /Users/runner/work/DeepEye/*
+        sudo rm -rf /Users/runner/work/Deepeye/Deepeye
 #    - name: Upload coverage to Codecov
 #      uses: codecov/codecov-action@v3
 #      with:
@@ -106,7 +106,7 @@ jobs:
         shell: bash
       - name: Cleanup workspace
         run: |
-          sudo rm -rf /Users/runner/work/DeepEye/*
+          sudo rm -rf /Users/runner/work/Deepeye/Deepeye
   
   build:
     name: Build and Publish.
