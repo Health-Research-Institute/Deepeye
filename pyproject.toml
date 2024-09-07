@@ -8,7 +8,7 @@ description = "DeepEye project"
 readme = "README.md"
 license = {file = "LICENSE"}
 
-requires-python = ">=3.12"
+requires-python = ">=3.11"
 dependencies = [
     "numpy",
     "pillow",
@@ -26,6 +26,7 @@ dependencies = [
 dev = [
     "bandit",
     "build",
+    "httpx",
     "pytest",
     "pytest-cov",
     "ruff",
@@ -97,4 +98,4 @@ exclude = [
 ignore = [
 ]
 
-target-version = "py312"
+target-version = "py311"
