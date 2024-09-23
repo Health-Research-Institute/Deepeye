@@ -8,7 +8,7 @@ description = "DeepEye project"
 readme = "README.md"
 license = {file = "LICENSE"}
 
-requires-python = ">=3.11"
+requires-python = ">=3.12"
 dependencies = [
     "numpy",
     "pillow",
@@ -17,7 +17,6 @@ dependencies = [
     "matplotlib",
     "tensorflow",
     "torch",
-    "torchaudio",
     "torchvision",
     "python-dotenv",
     "pandas"
@@ -25,7 +24,7 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
-    "bandit>=1.7",
+    "bandit",
     "build",
     "pytest",
     "pytest-cov",
@@ -50,12 +49,20 @@ requires = ["setuptools>=61.2", "setuptools_scm[toml]>=7"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
-packages = [ "" ]
+packages = ["LayersSegmenter", "densenetClassifier", "CNN_Classifier"]
 zip-safe = false
 include-package-data = true
 
 [tool.setuptools_scm]
 write_to = "_version.py"
+
+[tool.pytest.ini_options]
+markers = [
+    "allow_aliases: override setiings.EXPLORER_DATA_EXPORTERS_ALLOW_DATA_FILE_ALIAS (where applicable)",
+    "media_root: override settings.MEDIA_ROOT (where applicable)",
+    "include_data_files: override settings.EXPLORER_DATA_EXPORTERS_INCLUDE_DATA_FILES (where applicable)",
+    "sql: specifiy SQL query (where applicable)"
+]
 
 [tool.bandit]
 exclude_dirs = ["tests"]
@@ -90,4 +97,4 @@ exclude = [
 ignore = [
 ]
 
-target-version = "py311"
+target-version = "py312"
