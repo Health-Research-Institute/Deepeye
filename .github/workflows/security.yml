@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [ 3.12 ]
+        python-version: [ 3.11 ]
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python-version }}
@@ -25,9 +25,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
         run: |
-          python -m venv deepeye
-          source deepeye/bin/activate
-          python -m pip install --upgrade pip
+          python3 -m pip install --upgrade pip
           pip install -r requirements/dev.txt
         shell: bash
       - name: Run bandit (via tox)
