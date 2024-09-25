@@ -14,7 +14,6 @@ epochsRun = 50
 #Filenames and paths
 imageDirCoreName = 'Images/CT_RETINA_BinaryResearch'
 trainingDir = imageDirCoreName + '/cnnBinary/Training'
-#here we use valuation directory
 testingDir = imageDirCoreName + '/cnnBinary/Valuation'
 
 #extraxt model name from dateIndex file

@@ -5,12 +5,12 @@ from keras.models import load_model
 from sklearn.metrics import classification_report, confusion_matrix
 import pandas as pd
 
-modelName = 'cnnModel2024-09-18-18-27.h5'
-mildThreshold = 0.84
+modelName = 'cnnModel2024-09-24-13-34.h5'
+mildThreshold = 0.88
 
 #Filenames and paths
 imageDirCoreName = 'Images/CT_RETINA_BinaryResearch'
-trainingDir = imageDirCoreName + '/cnnBinary/Training'
+# = imageDirCoreName + '/cnnBinary/Training'
 testingDir = imageDirCoreName + '/cnnBinary/Testing'
 
 deepeye_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..")) # Folder containing Deepeye repo
@@ -137,7 +137,7 @@ for i in range (0, total_images):
             deLabel = 'ER'
             total_fn +=1
         elif probability[i][1] >= mildThreshold:
-            delabel = 'FALSE POS'
+            deLabel = 'FALSE POS'
             total_fp +=1
         else:
             deLabel = 'MR'

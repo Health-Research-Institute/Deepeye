@@ -5,12 +5,13 @@ from torch.utils.data import random_split
 import datetime
 
 
-#dataset = 'OCTID'
-dataset = 'KAGLE'
+dataset = 'OCTID'
+#dataset = 'KAGLE'
+percSplit = 0.825
 
 if dataset == 'OCTID':
-    classNames = ['AMD','CSR','DR','MH','NORMAL']
-    nTrain = [25, 25, 25, 25, 75]
+    classNames = ['AMD','DR', 'CSR','MH','OUTLIERS', 'NORMAL', 'VNORMAL']
+    nTrain = [60, 60, 60, 60, 30, 160, 16]
     imageCoreDir = '../Images/CT_RETINA'
 elif dataset == 'KAGLE':
     classNames = ['CNV','DME','DRUSEN','NORMAL']
@@ -46,15 +47,15 @@ for nClass in classNames:
 
     nImClass = nTrain[iClass]
     
-    if (0.8* nFiles < nImClass):
-        nT = round(0.8*nFiles)
+    if (percSplit* nFiles < nImClass):
+        nT = round(percSplit*nFiles)
         train_set, test_set = random_split(indArray, [nT, nFiles-nT])
     else:
         train_set, test_set = random_split(indArray, [nImClass, nFiles-nImClass])
    
     #split train set to train and valuation
     lenTrain = len(train_set)
-    valN = round(0.2*lenTrain)
+    valN = round((1-percSplit)*lenTrain)
     train_set, val_set = random_split(train_set, [lenTrain-valN, valN])
 
 

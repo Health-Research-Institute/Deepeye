@@ -13,7 +13,8 @@ nLayers= 9 # Number of classes for segmentation
 layersNames = ['BCG', 'NFL', 'GCL', 'INL', 'OPL' , 'ONL', 'ELZ', 'RPE', 'CHO'] #layers names 
 nOrder =  [0, 5, 3, 6, 1, 7, 4, 2, 8] #Sequence of layers per BN model:
 
-classNames = ['AMD','CSR','DR','MH','NORMAL']
+#classNames = ['AMD','CSR','DR','MH','OUTLIERS','NORMAL', 'VNORMAL']
+classNames = ['OUTLIERS','VNORMAL']
 modelDirName = '../Models/segmentModels/retina_segmentation_8_layer.hdf5'
 
 # LOAD MODEL

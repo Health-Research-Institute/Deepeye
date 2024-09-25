@@ -21,7 +21,7 @@ def delete_files_and_subdir(directory_path):
 
 ###### SET_UP PARAMETERS
 # Specify the partition log file from where image file names should be taken
-trainLogFile = 'KAGLE_2024-09-18-18-27train.csv'
+trainLogFile = 'OCTID_2024-09-24-13-34train.csv'
 
 #Extraxt data set name
 dataset = trainLogFile.split('_')[0] 
@@ -65,149 +65,60 @@ for alg in algs:
     os.makedirs(alg + '/Valuation/ER')
     os.makedirs(alg + '/Valuation/NR')
 
-#TRAINING FILES COPYING
-#read line by line:
-with open(logsFromDir  + trainLogFile ) as trainF:
-    while True:
-        line = trainF.readline()
-        if not line:
-            break
-        #ignore first line with titles 
-        if len(line) > 40: #proceed with parcing lines 
-            noSpace = line.split(",") #split line into image # and names 
-            nImages = int(noSpace[0]) #number of images or imagesx8 to copy
+#TFILES COPYING
+logFilesTTV = [trainLogFile, testLogFile, valLogFile]
+dirsN = ['/Training', '/Testing', '/Valuation']
 
-            baseClassName = noSpace[1]
-            #deal with CNN first, Dense Next
-            if dataset == 'OCTID': 
-                dirFromCNN = imageFromDir + '/' + baseClassName + '/' + 'All' #put /
-                dirFromDense = imageFromDir + '/' + baseClassName + '/' + 'All9L' #put /
-            elif dataset == 'KAGLE': 
-                dirFromCNN = imageFromDir + '/' + baseClassName
+for j in range(len(dirsN)):
 
+    #read line by line:
+    with open(logsFromDir  + logFilesTTV[j] ) as trainF:
+        while True:
+            line = trainF.readline()
+            if not line:
+                break
+            #ignore first line with titles 
+            if len(line) > 40: #proceed with parcing lines 
+                noSpace = line.split(",") #split line into image # and names 
+                nImages = int(noSpace[0]) #number of images or imagesx8 to copy
 
-            if baseClassName == 'NORMAL':
-                dirToCNN = imageToDirCNN + '/Training/NR'
-                dirToDense = imageToDirDense + '/Training/NR'
-            else:
-                dirToCNN = imageToDirCNN + '/Training/ER'
-                dirToDense = imageToDirDense + '/Training/ER'
-        
-            # copy images  
-            for i in range(0, nImages):
-                #extract base file name
-                #NOTICE to skip 2 indexes in noSpace array
+                baseClassName = noSpace[1]
+                #deal with CNN first, Dense Next
                 if dataset == 'OCTID': 
-                    base_file_name = ''.join([c for c in noSpace[i+2] if c.isupper() or c.isdigit()])             
+                    dirFromCNN = imageFromDir + '/' + baseClassName + '/' + 'All' #put /
+                    dirFromDense = imageFromDir + '/' + baseClassName + '/' + 'All9L' #put /
                 elif dataset == 'KAGLE': 
-                    base_file_name = ''.join([c for c in noSpace[i+2] if c.isupper() or c.isdigit() or c=='-'])
-                #add .jpeg for cnn files
-                cnnFileName = base_file_name + '.jpeg'
-                shutil.copy(os.path.join(dirFromCNN, cnnFileName), dirToCNN)
-
-                if dataset == 'OCTID': 
-                    for j in layersNames:
-                        denseFileName = base_file_name + j + '.jpg'
-                        shutil.copy(os.path.join(dirFromDense, denseFileName), dirToDense)       
-trainF.close()
-
-#Testing FILES COPYING
-
-#read line by line:
-with open(logsFromDir  + testLogFile ) as testF:
-    while True:
-        line = testF.readline()
-        if not line:
-            break
-        #ignore first line with titles 
-        if len(line) > 40: #proceed with parcing lines 
-            noSpace = line.split(",") #split line into image # and names 
-            nImages = int(noSpace[0]) #number of images or imagesx8 to copy
-
-            baseClassName = noSpace[1]
-            #deal with CNN first, Dense Next
-            if dataset == 'OCTID': 
-                dirFromCNN = imageFromDir + '/' + baseClassName + '/' + 'All' #put /
-                dirFromDense = imageFromDir + '/' + baseClassName + '/' + 'All9L' #put /
-            elif dataset == 'KAGLE': 
-                dirFromCNN = imageFromDir + '/' + baseClassName
-
-            if (baseClassName == 'NORMAL'):
-                dirToCNN = imageToDirCNN + '/Testing/NR'
-                dirToDense = imageToDirDense + '/Testing/NR'
-            else:
-                dirToCNN = imageToDirCNN + '/Testing/ER'
-                dirToDense = imageToDirDense + '/Testing/ER'
-        
-            # copy images  
-            for i in range(0, nImages):
-                #extract base file name
-                #NOTICE to skip 2 indexes in noSpace array
-                if dataset == 'OCTID': 
-                    base_file_name = ''.join([c for c in noSpace[i+2] if c.isupper() or c.isdigit()])             
-                elif dataset == 'KAGLE': 
-                    base_file_name = ''.join([c for c in noSpace[i+2] if c.isupper() or c.isdigit() or c=='-'])
-
-                #add .jpeg for cnn files
-                cnnFileName = base_file_name + '.jpeg'
-                shutil.copy(os.path.join(dirFromCNN, cnnFileName), dirToCNN)
-
-                if dataset == 'OCTID': 
-                    for j in layersNames:
-                        denseFileName = base_file_name + j + '.jpg'
-                        shutil.copy(os.path.join(dirFromDense, denseFileName), dirToDense)       
-testF.close()
+                    dirFromCNN = imageFromDir + '/' + baseClassName
 
 
-
-with open(logsFromDir  + valLogFile ) as valF:
-    while True:
-        line = valF.readline()
-        if not line:
-            break
-        #ignore first line with titles 
-        if len(line) > 40: #proceed with parcing lines 
-            noSpace = line.split(",") #split line into image # and names 
-            nImages = int(noSpace[0]) #number of images or imagesx8 to copy
-
-            baseClassName = noSpace[1]
-            #deal with CNN first, Dense Next
-            if dataset == 'OCTID': 
-                dirFromCNN = imageFromDir + '/' + baseClassName + '/' + 'All' #put /
-                dirFromDense = imageFromDir + '/' + baseClassName + '/' + 'All9L' #put /
-            elif dataset == 'KAGLE': 
-                dirFromCNN = imageFromDir + '/' + baseClassName
-
-            if (baseClassName == 'NORMAL'):
-                dirToCNN = imageToDirCNN + '/Valuation/NR'
-                dirToDense = imageToDirDense + '/Valuation/NR'
-            else:
-                dirToCNN = imageToDirCNN + '/Valuation/ER'
-                dirToDense = imageToDirDense + '/Valuation/ER'
-        
-            # copy images  
-            for i in range(0, nImages):
-                #extract base file name
-                #NOTICE to skip 2 indexes in noSpace array
-                if dataset == 'OCTID': 
-                    base_file_name = ''.join([c for c in noSpace[i+2] if c.isupper() or c.isdigit()])             
-                elif dataset == 'KAGLE': 
-                    base_file_name = ''.join([c for c in noSpace[i+2] if c.isupper() or c.isdigit() or c=='-'])
-
-                #add .jpeg for cnn files
-                cnnFileName = base_file_name + '.jpeg'
-                shutil.copy(os.path.join(dirFromCNN, cnnFileName), dirToCNN)
-
-                if dataset == 'OCTID': 
-                    for j in layersNames:
-                        denseFileName = base_file_name + j + '.jpg'
-                        shutil.copy(os.path.join(dirFromDense, denseFileName), dirToDense)       
-valF.close()
+                if baseClassName == 'NORMAL' or baseClassName == 'VNORMAL':
 
 
+                    dirToCNN = imageToDirCNN + dirsN[j] +'/NR'
+                    dirToDense = imageToDirDense + dirsN[j] +'/NR'
+                elif baseClassName == 'OUTLIERS':
+                    zuzu = 1
+                else:
+                    dirToCNN = imageToDirCNN + dirsN[j] +'/ER'
+                    dirToDense = imageToDirDense + dirsN[j] +'/ER'
+            
+                # copy images  
+                for i in range(0, nImages):
+                    #extract base file name
+                    #NOTICE to skip 2 indexes in noSpace array
+                    if dataset == 'OCTID': 
+                        base_file_name = ''.join([c for c in noSpace[i+2] if c.isupper() or c.isdigit() or c=='a' or c =='n' or c== 'd'])             
+                    elif dataset == 'KAGLE': 
+                        base_file_name = ''.join([c for c in noSpace[i+2] if c.isupper() or c.isdigit() or c=='-'])
+                    #add .jpeg for cnn files
+                    cnnFileName = base_file_name + '.jpeg'
+                    shutil.copy(os.path.join(dirFromCNN, cnnFileName), dirToCNN)
 
-
-
+                    if dataset == 'NONE': #temporary fix
+                        for j in layersNames:
+                            denseFileName = base_file_name + j + '.jpg'
+                            shutil.copy(os.path.join(dirFromDense, denseFileName), dirToDense)       
+    trainF.close()
 
 print('Files were Copied')
 
