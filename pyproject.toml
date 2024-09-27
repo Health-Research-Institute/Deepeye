@@ -17,7 +17,6 @@ dependencies = [
     "matplotlib",
     "tensorflow",
     "torch",
-    "torchaudio",
     "torchvision",
     "python-dotenv",
     "pandas"
@@ -25,8 +24,9 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
-    "bandit>=1.7",
+    "bandit",
     "build",
+    "httpx",
     "pytest",
     "pytest-cov",
     "ruff",
