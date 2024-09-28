@@ -18,7 +18,8 @@ dependencies = [
     "tensorflow<=2.17.0",
     "python-dotenv",
     "pandas",
-    "keras"
+    "keras",
+    "torchvision"
 ]
 
 [project.optional-dependencies]
