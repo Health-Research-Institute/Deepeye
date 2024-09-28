@@ -10,33 +10,26 @@ license = {file = "LICENSE"}
 
 requires-python = ">=3.11"
 dependencies = [
-    "numpy",
-    "pillow",
-    "opencv-python",
-    "scikit-learn",
-    "matplotlib",
-    "tensorflow",
-    "torch",
-    "torchvision",
-    "python-dotenv",
-    "pandas"
+    "fastapi[all]",
 ]
 
 [project.optional-dependencies]
 dev = [
-    "bandit",
+    "bandit>=1.7",
     "build",
     "httpx",
     "pytest",
     "pytest-cov",
     "ruff",
+    "setuptools>=61.2",
+    "setuptools_scm[toml]>=8.0",
     "tox"
 ]
 docs = [
     "sphinx",
     "sphinx_rtd_theme",
+    "sphinx_book_theme",
     "sphinx-automodapi",
-    "sphinx-issues",
     "nbsphinx"
 ]
 
@@ -46,7 +39,7 @@ documentation = "https://github.com/Health-Research-Institute/Deepeye"
 repository = "https://github.com/Health-Research-Institute/Deepeye"
 
 [build-system]
-requires = ["setuptools>=61.2", "setuptools_scm[toml]>=7"]
+requires = ["setuptools>=61.2", "setuptools_scm[toml]>=8.0"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
