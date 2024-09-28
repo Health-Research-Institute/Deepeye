@@ -16,8 +16,6 @@ dependencies = [
     "scikit-learn",
     "matplotlib",
     "tensorflow<=2.17.0",
-    "torch",
-    "torchvision",
     "python-dotenv",
     "pandas"
 ]
