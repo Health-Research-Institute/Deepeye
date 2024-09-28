@@ -19,7 +19,7 @@ dependencies = [
     "python-dotenv",
     "pandas",
     "keras",
-    "torchvision"
+    "torch"
 ]
 
 [project.optional-dependencies]
