@@ -43,7 +43,7 @@ jobs:
     strategy:
       matrix:
         python-version: [3.11]
-        os: [macos-latest, windows-latest]
+        os: [macos-latest, windows-latest, ubuntu-latest]
     env:
       OS: ${{ matrix.os }}
       PYTHON: ${{ matrix.python-version }}
