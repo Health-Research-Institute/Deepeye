@@ -57,6 +57,7 @@ include-package-data = true
 
 [tool.setuptools_scm]
 write_to = "_version.py"
+local_scheme = "no-local-version"
 
 [tool.pytest.ini_options]
 markers = [
