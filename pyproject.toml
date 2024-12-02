@@ -15,7 +15,7 @@ dependencies = [
     "opencv-python",
     "scikit-learn",
     "matplotlib",
-    "tensorflow<=2.17.0",
+    "tensorflow<=2.18.0",
     "python-dotenv",
     "pandas",
     "keras"
