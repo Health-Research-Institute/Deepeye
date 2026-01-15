@@ -8,4 +8,4 @@ torch==2.9.1
 torchvision==0.24.1
 python-dotenv==1.2.1
 pandas==2.3.3
-keras==3.13.0
+keras==3.13.1
