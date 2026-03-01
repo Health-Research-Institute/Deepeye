@@ -1,11 +1,11 @@
 numpy>=1.23.5
 pillow==12.1.1
-opencv-python==4.13.0.90
+opencv-python==4.13.0.92
 scikit-learn==1.8.0
 matplotlib==3.10.8
 tensorflow<=2.20.0
 torch==2.10.0
 torchvision==0.25.0
 python-dotenv==1.2.1
-pandas==3.0.0
+pandas==3.0.1
 keras==3.13.2
