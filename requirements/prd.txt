@@ -1,4 +1,4 @@
-numpy>=2.4.4
+numpy>=2.4.6
 pillow==12.2.0
 opencv-python==4.13.0.92
 scikit-learn==1.8.0
