@@ -1,7 +1,7 @@
 import cv2
 
 # read image
-#img = cv2.imread("OCT-Retinal-Layer-Segmenter/bt.JPG")
+# img = cv2.imread("OCT-Retinal-Layer-Segmenter/bt.JPG")
 
 img = cv2.imread("cv_img.jpg")
 # convert img to grayscale
@@ -11,13 +11,13 @@ gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 thresh = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 101, 3)
 
 # apply morphology open then close
-kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5,5))
+kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5))
 blob = cv2.morphologyEx(thresh, cv2.MORPH_OPEN, kernel)
-kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (9,9))
+kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (9, 9))
 blob = cv2.morphologyEx(blob, cv2.MORPH_CLOSE, kernel)
 
 # invert blob
-blob = (255 - blob)
+blob = 255 - blob
 
 # Get contours
 cnts = cv2.findContours(blob, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
@@ -32,7 +32,7 @@ if blob_area < blob_area_thresh:
 
 # draw contour
 result = img.copy()
-cv2.drawContours(result, [big_contour], -1, (0,0,255), 1)
+cv2.drawContours(result, [big_contour], -1, (0, 0, 255), 1)
 
 # write results to disk
 cv2.imwrite("doco3_threshold.jpg", thresh)

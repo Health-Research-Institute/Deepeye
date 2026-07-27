@@ -97,3 +97,9 @@ exclude = [
     "venv",
 ]
 target-version = "py311"
+
+[tool.ruff.lint]
+# The package and module names (e.g. CNN_Classifier, LayersSegmenter,
+# densenetClassifier, Training_*/Testset_*) follow the project's deliberate
+# naming convention and are referenced from setup.py / [tool.setuptools].
+ignore = ["N999"]
