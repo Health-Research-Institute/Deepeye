@@ -30,7 +30,7 @@ dev = [
     "pytest-cov",
     "ruff",
     "setuptools>=61.2",
-    "setuptools_scm[toml]>=10.2.0",
+    "setuptools_scm[toml]>=10.2.1",
     "tox"
 ]
 docs = [
@@ -47,7 +47,7 @@ documentation = "https://github.com/Health-Research-Institute/Deepeye"
 repository = "https://github.com/Health-Research-Institute/Deepeye"
 
 [build-system]
-requires = ["setuptools>=61.2", "setuptools_scm[toml]>=10.2.0"]
+requires = ["setuptools>=61.2", "setuptools_scm[toml]>=10.2.1"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
